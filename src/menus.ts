@@ -44,7 +44,7 @@ export function addShowOnMap(
     if (geolocation) {
         menu.addItem((item: MenuItem) => {
             item.setTitle('Show on map');
-            item.setSection('mapview');
+            item.setSection('chinese-mapview');
             item.setIcon('globe');
             const openFunc = async (evt: MouseEvent) =>
                 await plugin.openMapWithLocation(
@@ -71,7 +71,7 @@ export function addOpenWith(
         menu.addItem((item: MenuItem) => {
             item.setTitle('Open with default app');
             item.setIcon('map-pin');
-            item.setSection('mapview');
+            item.setSection('chinese-mapview');
             item.onClick((_ev) => {
                 open(`geo:${geolocation.lat},${geolocation.lng}`);
             });
@@ -102,7 +102,7 @@ export function populateOpenInItems(
         menu.addItem((item: MenuItem) => {
             item.setTitle(`Open in ${setting.name}`);
             item.setIcon('map-pin');
-            item.setSection('mapview');
+            item.setSection('chinese-mapview');
             item.onClick((_ev) => {
                 open(fullUrl);
             });
@@ -120,7 +120,7 @@ export function addGeolocationToNote(
 ) {
     menu.addItem((item: MenuItem) => {
         item.setTitle('Add geolocation (front matter)');
-        item.setSection('mapview');
+        item.setSection('chinese-mapview');
         item.setIcon('map-pin-plus');
         item.onClick(async (_evt: MouseEvent) => {
             const dialog = new LocationSearchDialog(
@@ -147,7 +147,7 @@ export function addFocusNoteInMapView(
         const fileName = utils.trimmedFileName(file);
         item.setTitle(`Focus '${fileName}' in Map View`);
         item.setIcon('map-pinned');
-        item.setSection('mapview');
+        item.setSection('chinese-mapview');
         const openFunc = async (evt: MouseEvent) =>
             await plugin.openMapWithState(
                 {
@@ -175,7 +175,7 @@ export function addUrlConversionItems(
         menu.addItem((item: MenuItem) => {
             item.setTitle('Convert to geolocation (geosearch)');
             item.setIcon('search');
-            item.setSection('mapview');
+            item.setSection('chinese-mapview');
             item.onClick(
                 async () => await suggestor.selectionToLink(editor, file),
             );
@@ -187,7 +187,7 @@ export function addUrlConversionItems(
         menu.addItem(async (item: MenuItem) => {
             item.setTitle('Convert to geolocation');
             item.setIcon('search');
-            item.setSection('mapview');
+            item.setSection('chinese-mapview');
             item.onClick(async () => {
                 urlConvertor.convertUrlAtCursorToGeolocation(editor, file);
             });
@@ -195,7 +195,7 @@ export function addUrlConversionItems(
 
     menu.addItem((item: MenuItem) => {
         item.setTitle('Paste as geolocation');
-        item.setSection('mapview');
+        item.setSection('chinese-mapview');
         item.setIcon('clipboard-x');
         item.onClick(async () => {
             const clipboard = await navigator.clipboard.readText();
@@ -218,7 +218,7 @@ export function addUrlConversionItems(
 export function addEmbed(menu: Menu, plugin: MapViewPlugin, editor: Editor) {
     menu.addItem((item: MenuItem) => {
         item.setTitle('Embed a Map View');
-        item.setSection('mapview');
+        item.setSection('chinese-mapview');
         item.setIcon('log-in');
         item.onClick(() => {
             plugin.openQuickEmbed(editor);
@@ -349,7 +349,7 @@ export function addFocusLinesInMapView(
             } in Map View`,
         );
         item.setIcon('map-pinned');
-        item.setSection('mapview');
+        item.setSection('chinese-mapview');
         const openFunc = async (evt: MouseEvent) =>
             await plugin.openMapWithState(
                 {
@@ -374,7 +374,7 @@ export function addImport(
     menu.addItem((item: MenuItem) => {
         item.setTitle('Import geolocations from file...');
         item.setIcon('map-pin-plus-inside');
-        item.setSection('mapview');
+        item.setSection('chinese-mapview');
         item.onClick(async (evt: MouseEvent) => {
             const dialog = new SvelteModal(
                 ImportDialog,
@@ -484,7 +484,7 @@ export function populateRouting(
     if (geolocation) {
         menu.addItem((item: MenuItem) => {
             item.setTitle('Mark as routing source');
-            item.setSection('mapview');
+            item.setSection('chinese-mapview');
             item.setIcon('flag');
             item.onClick(() => {
                 mapContainer.setRoutingSource(geolocation, existingLayer?.name);
@@ -494,7 +494,7 @@ export function populateRouting(
         if (mapContainer.display.routingSource) {
             menu.addItem((item: MenuItem) => {
                 item.setTitle('Route to point');
-                item.setSection('mapview');
+                item.setSection('chinese-mapview');
                 item.setIcon('milestone');
                 const submenu = (item as any).setSubmenu();
                 populateRouteToPoint(
@@ -507,7 +507,7 @@ export function populateRouting(
         } else {
             menu.addItem((item: MenuItem) => {
                 item.setTitle('Route from...');
-                item.setSection('mapview');
+                item.setSection('chinese-mapview');
                 item.setIcon('milestone');
                 item.onClick(async () => {
                     const result = await getMarkerFromUser(
