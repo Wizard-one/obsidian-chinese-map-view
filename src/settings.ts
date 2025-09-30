@@ -289,10 +289,16 @@ export const DEFAULT_SETTINGS: PluginSettings = {
     googlePlacesDataFields: '',
     mapSources: [
         {
+            name: '高德地图',
+            urlLight:
+                'https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+            preset: true,
+        },
+        {
             name: 'CartoDB',
             urlLight:
                 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-            preset: true,
+            preset: false,
         },
     ],
     frontMatterKey: 'location',

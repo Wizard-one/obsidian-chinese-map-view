@@ -134,7 +134,7 @@ export default class MapViewPlugin extends Plugin {
         this.registerObsidianProtocolHandler(
             'mapview',
             async (params: ObsidianProtocolData) => {
-                if (params.action === 'mapview') {
+                if (params.action === 'chinese-mapview') {
                     if (params.mvaction === 'showonmap') {
                         const location =
                             params.centerLat && params.centerLng

@@ -57,6 +57,11 @@ import { getIconFromOptions, type IconOptions } from 'src/markerIcons';
 import MapViewPlugin from 'src/main';
 import * as utils from 'src/utils';
 import {
+    isAutoNaviMapSource,
+    getAutoNaviSubdomains,
+    transformCoordinatesForAutoNavi,
+} from 'src/coordinateTransformer';
+import {
     ViewControls,
     SearchControl,
     RoutingControl,
@@ -245,7 +250,7 @@ export class MapContainer {
 
     copyStateUrl() {
         const params = stateToUrl(this.state);
-        const url = `obsidian://mapview?do=open&${params}`;
+        const url = `obsidian://chinese-mapview?do=open&${params}`;
         navigator.clipboard.writeText(url);
         new Notice('Copied state URL to clipboard');
     }
@@ -518,12 +523,17 @@ export class MapContainer {
             const neededClassName = revertMap ? 'dark-mode' : '';
             const maxNativeZoom =
                 chosenMapSource.maxZoom ?? consts.DEFAULT_MAX_TILE_ZOOM;
+            // 根据地图源选择合适的subdomains
+            let subdomains = ['mt0', 'mt1', 'mt2', 'mt3'];
+            if (isAutoNaviMapSource(chosenMapSource)) {
+                subdomains = getAutoNaviSubdomains();
+            }
             this.display.tileLayer = this.createTileLayer(mapSourceUrl, {
                 maxZoom: this.settings.letZoomBeyondMax
                     ? consts.MAX_ZOOM
                     : maxNativeZoom,
                 maxNativeZoom: maxNativeZoom,
-                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                subdomains: subdomains,
                 attribution: attribution,
                 className: neededClassName,
                 errorTileUrl: this.createErrorTile(),
@@ -1017,8 +1027,20 @@ export class MapContainer {
                         if (edge.polyline) {
                             continue;
                         }
+                        // 根据当前地图源决定是否需要坐标转换
+                        let startLocation = edge.marker1.location;
+                        let endLocation = edge.marker2.location;
+                        if (isAutoNaviMapSource(this.getMapSource())) {
+                            startLocation = transformCoordinatesForAutoNavi(
+                                edge.marker1.location,
+                            );
+                            endLocation = transformCoordinatesForAutoNavi(
+                                edge.marker2.location,
+                            );
+                        }
+
                         let polyline = leaflet.polyline(
-                            [edge.marker1.location, edge.marker2.location],
+                            [startLocation, endLocation],
                             {
                                 color: this.state.linkColor,
                                 weight: 1,
@@ -1083,7 +1105,13 @@ export class MapContainer {
             icon = new leaflet.Icon.Default();
         }
 
-        let newMarker = leaflet.marker(marker.location, {
+        // 根据当前地图源决定是否需要坐标转换
+        let markerLocation = marker.location;
+        if (isAutoNaviMapSource(this.getMapSource())) {
+            markerLocation = transformCoordinatesForAutoNavi(marker.location);
+        }
+
+        let newMarker = leaflet.marker(markerLocation, {
             icon: icon,
             autoPan: true,
             opacity: marker.opacity,
@@ -1481,7 +1509,13 @@ export class MapContainer {
     }
 
     addSearchResultMarker(details: GeoSearchResult, keepZoom: boolean) {
-        this.display.searchResult = leaflet.marker(details.location, {
+        // 根据当前地图源决定是否需要坐标转换
+        let markerLocation = details.location;
+        if (isAutoNaviMapSource(this.getMapSource())) {
+            markerLocation = transformCoordinatesForAutoNavi(details.location);
+        }
+
+        this.display.searchResult = leaflet.marker(markerLocation, {
             icon: getIconFromOptions(
                 consts.SEARCH_RESULT_MARKER,
                 [],
@@ -1523,7 +1557,14 @@ export class MapContainer {
         const distanceKmStr = (route.distanceMeters / 1000).toFixed(1);
         const floatingPath = new FloatingPath(null, route.path);
         floatingPath.routingResult = route;
-        const geoJsonLayer = leaflet.geoJSON(route.path, {
+
+        // 如果是高德地图源，需要转换路径坐标
+        let pathData = route.path;
+        if (isAutoNaviMapSource(this.getMapSource())) {
+            pathData = this.transformGeoJsonCoordinates(route.path);
+        }
+
+        const geoJsonLayer = leaflet.geoJSON(pathData, {
             style: {
                 ...consts.ROUTING_PATH_OPTIONS,
                 bubblingMouseEvents: false, // This lets stuff like the 'contextmenu' event work
@@ -1694,13 +1735,20 @@ export class MapContainer {
             this.display.realTimeControls.enable();
         const center = this.lastRealTimeLocation.center;
         const accuracy = this.lastRealTimeLocation.accuracy;
+
+        // 根据当前地图源决定是否需要坐标转换
+        let markerLocation = center;
+        if (isAutoNaviMapSource(this.getMapSource())) {
+            markerLocation = transformCoordinatesForAutoNavi(center);
+        }
+
         this.display.realTimeLocationMarker = leaflet
-            .circleMarker(center, {
-                radius: 8, // radius in pixels
-                color: '#4285F4',
-                fillColor: '#4285F4',
-                fillOpacity: 0.7,
-                weight: 2,
+            .marker(markerLocation, {
+                icon: getIconFromOptions(
+                    consts.CURRENT_LOCATION_MARKER,
+                    [],
+                    this.plugin.iconFactory,
+                ),
             })
             .addTo(this.display.map);
         this.display.realTimeLocationMarker.on(
@@ -1722,7 +1770,7 @@ export class MapContainer {
             },
         );
         this.display.realTimeLocationRadius = leaflet
-            .circle(center, { radius: accuracy })
+            .circle(markerLocation, { radius: accuracy })
             .addTo(this.display.map);
     }
 
@@ -1780,8 +1828,14 @@ export class MapContainer {
             this.display.routingSource = null;
         }
         if (location) {
+            // 根据当前地图源决定是否需要坐标转换
+            let markerLocation = location;
+            if (isAutoNaviMapSource(this.getMapSource())) {
+                markerLocation = transformCoordinatesForAutoNavi(location);
+            }
+
             this.display.routingSource = leaflet
-                .marker(location, {
+                .marker(markerLocation, {
                     icon: getIconFromOptions(
                         consts.ROUTING_SOURCE_MARKER,
                         [],
@@ -1998,7 +2052,13 @@ export class MapContainer {
     }
 
     private newLeafletGeoJson(marker: GeoJsonLayer): leaflet.GeoJSON {
-        const geoJsonLayer = leaflet.geoJSON(marker.geojson, {
+        // 如果是高德地图源，需要转换GeoJSON中的坐标
+        let geoJsonData = marker.geojson;
+        if (isAutoNaviMapSource(this.getMapSource())) {
+            geoJsonData = this.transformGeoJsonCoordinates(marker.geojson);
+        }
+
+        const geoJsonLayer = leaflet.geoJSON(geoJsonData, {
             style: {
                 ...marker.pathOptions,
                 bubblingMouseEvents: false, // This lets stuff like the 'contextmenu' event work
@@ -2027,7 +2087,13 @@ export class MapContainer {
                 }
             },
             pointToLayer: (feature: any, latlng: leaflet.LatLng) => {
-                const leafletMarker = leaflet.marker(latlng, {
+                // 根据当前地图源决定是否需要坐标转换
+                let markerLocation = latlng;
+                if (isAutoNaviMapSource(this.getMapSource())) {
+                    markerLocation = transformCoordinatesForAutoNavi(latlng);
+                }
+
+                const leafletMarker = leaflet.marker(markerLocation, {
                     icon: getIconFromOptions(
                         consts.GEOJSON_MARKER,
                         [],
@@ -2119,19 +2185,49 @@ export class MapContainer {
         return this.mapContainerId;
     }
 
-    private createLoadAnimationDiv() {
-        if (this.display.loadAnimationDiv) return;
-        if (this.plugin.layerCache) return;
+    /**
+     * 转换GeoJSON中的坐标用于高德地图
+     */
+    private transformGeoJsonCoordinates(geojson: any): any {
+        if (!geojson) return geojson;
 
-        // Imitating the Obsidian load indicator
-        this.display.loadAnimationDiv =
-            this.display.mapDiv.createDiv('mv-load-bar');
-        const bar = this.display.loadAnimationDiv.createDiv(
-            'progress-bar-indicator',
-        );
-        bar.createDiv('progress-bar-line');
-        bar.createDiv('progress-bar-subline').style = 'display: none;';
-        bar.createDiv('progress-bar-subline').addClass('mod-increase');
-        bar.createDiv('progress-bar-subline').addClass('mod-decrease');
+        const transformedGeojson = JSON.parse(JSON.stringify(geojson)); // 深拷贝
+
+        const transformCoordinates = (coords: any): any => {
+            if (
+                typeof coords[0] === 'number' &&
+                typeof coords[1] === 'number'
+            ) {
+                // 这是一个坐标点 [lng, lat]
+                const latlng = new leaflet.LatLng(coords[1], coords[0]);
+                const transformed = transformCoordinatesForAutoNavi(latlng);
+                return [transformed.lng, transformed.lat];
+            } else if (Array.isArray(coords[0])) {
+                // 这是一个坐标数组，递归处理
+                return coords.map(transformCoordinates);
+            }
+            return coords;
+        };
+
+        const processGeometry = (geometry: any) => {
+            if (geometry && geometry.coordinates) {
+                geometry.coordinates = transformCoordinates(
+                    geometry.coordinates,
+                );
+            }
+        };
+
+        if (transformedGeojson.type === 'Feature') {
+            processGeometry(transformedGeojson.geometry);
+        } else if (transformedGeojson.type === 'FeatureCollection') {
+            transformedGeojson.features?.forEach((feature: any) => {
+                processGeometry(feature.geometry);
+            });
+        } else {
+            // 直接是几何对象
+            processGeometry(transformedGeojson);
+        }
+
+        return transformedGeojson;
     }
 }

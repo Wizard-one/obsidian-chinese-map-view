@@ -1,6 +1,6 @@
 {
-    "name": "obsidian-map-view",
-    "version": "6.1.4",
+    "name": "obsidian-chinese-map-view",
+    "version": "6.0.0.b1",
     "description": "An interactive map view for Obsidian.md",
     "main": "main.js",
     "type": "module",

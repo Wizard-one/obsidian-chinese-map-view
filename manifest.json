@@ -1,8 +1,8 @@
 {
-    "id": "obsidian-map-view",
-    "name": "Map View",
+    "id": "obsidian-chinese-map-view",
+    "name": "Chinese Map View",
     "version": "6.1.4",
     "minAppVersion": "1.11.4",
-    "description": "An interactive map view.",
+    "description": "An interactive map view with Chinese map support.",
     "isDesktopOnly": false
 }
