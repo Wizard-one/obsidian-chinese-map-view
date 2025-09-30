@@ -2007,7 +2007,8 @@ export class MapContainer {
     private newLeafletGeoJson(marker: GeoJsonLayer): leaflet.GeoJSON {
         // 如果是高德地图源，需要转换GeoJSON中的坐标
         let geoJsonData = marker.geojson;
-        if (isAutoNaviMapSource(this.getMapSource())) {
+        const isAutoNavi = isAutoNaviMapSource(this.getMapSource());
+        if (isAutoNavi) {
             geoJsonData = this.transformGeoJsonCoordinates(marker.geojson);
         }
 
@@ -2040,11 +2041,9 @@ export class MapContainer {
                 }
             },
             pointToLayer: (feature: any, latlng: leaflet.LatLng) => {
-                // 根据当前地图源决定是否需要坐标转换
-                let markerLocation = latlng;
-                if (isAutoNaviMapSource(this.getMapSource())) {
-                    markerLocation = transformCoordinatesForAutoNavi(latlng);
-                }
+                // 注意：如果是高德地图源，坐标已经在 transformGeoJsonCoordinates 中转换过了
+                // 所以这里不需要再次转换，直接使用 latlng
+                const markerLocation = latlng;
 
                 const leafletMarker = leaflet.marker(markerLocation, {
                     icon: getIconFromOptions(
