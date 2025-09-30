@@ -23,6 +23,10 @@ import { MapContainer } from 'src/mapContainer';
 import { type PluginSettings } from 'src/settings';
 import { FileMarker, renameMarker, createMarkerInFile } from 'src/fileMarker';
 import { createGeoJsonInFile } from 'src/geojsonLayer';
+import {
+    isAutoNaviMapSource,
+    transformCoordinatesFromAutoNavi,
+} from 'src/coordinateTransformer';
 import { SvelteModal } from 'src/svelte';
 import TextBoxDialog from './components/TextBoxDialog.svelte';
 import ImportDialog from './components/ImportDialog.svelte';
@@ -602,8 +606,14 @@ export function addMarkerAddToNote(
             const heading =
                 mapContainer.display.controls.editModeTools.noteHeading;
             const tags = mapContainer.display.controls.editModeTools.tags;
+            let markerLocation = geolocation;
+            // 如果使用高德地图，需要将GCJ-02坐标转换回WGS84保存
+            if (isAutoNaviMapSource(mapContainer.getMapSource())) {
+                markerLocation =
+                    transformCoordinatesFromAutoNavi(markerLocation);
+            }
             createMarkerInFile(
-                geolocation,
+                markerLocation,
                 file,
                 heading,
                 tags,

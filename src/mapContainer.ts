@@ -63,6 +63,7 @@ import {
     isAutoNaviMapSource,
     getAutoNaviSubdomains,
     transformCoordinatesForAutoNavi,
+    transformCoordinatesFromAutoNavi,
 } from 'src/coordinateTransformer';
 import {
     ViewControls,
@@ -694,8 +695,14 @@ export class MapContainer {
                     e.shape === 'Marker' &&
                     e.layer instanceof leaflet.Marker
                 ) {
+                    let markerLocation = e.layer.getLatLng();
+                    // 如果使用高德地图，需要将GCJ-02坐标转换回WGS84保存
+                    if (isAutoNaviMapSource(this.getMapSource())) {
+                        markerLocation =
+                            transformCoordinatesFromAutoNavi(markerLocation);
+                    }
                     createMarkerInFile(
-                        e.layer.getLatLng(),
+                        markerLocation,
                         file,
                         heading,
                         tags,
