@@ -248,7 +248,7 @@ export class MapContainer {
         const params = stateToUrl(this.state);
         const url = `obsidian://chinese-mapview?do=open&${params}`;
         navigator.clipboard.writeText(url);
-        new Notice('Copied state URL to clipboard');
+        new Notice('状态URL已复制到剪贴板');
     }
 
     copyCodeBlock() {
@@ -657,7 +657,7 @@ export class MapContainer {
         });
         this.display.map.on('pm:drawstart', (e) => {
             if (!this.display.controls.editModeTools.noteToEdit) {
-                new Notice('You must first select a note.');
+                new Notice('您必须先选择一个笔记。');
                 this.display.map.pm.disableDraw();
                 this.display.controls.openEditSection();
             }
@@ -1166,7 +1166,7 @@ export class MapContainer {
                         this.app,
                     );
                 } else {
-                    new Notice('Cannot edit this path.');
+                    new Notice('无法编辑此路径。');
                     console.error('Cannot edit unknown object:', e);
                 }
             },
@@ -2101,7 +2101,7 @@ export class MapContainer {
                         this.app,
                     );
                 } else {
-                    new Notice('Cannot edit this path.');
+                    new Notice('无法编辑此路径。');
                     console.error('Cannot edit unknown object:', e);
                 }
             },

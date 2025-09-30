@@ -227,7 +227,7 @@
         presets = [view.defaultState, ...(settings.savedStates || [])];
         onChangePreset();
         await plugin.saveSettings();
-        new Notice('Default preset updated');
+        new Notice('默认预设已更新');
     }
 
     async function copyUrl() {

@@ -73,20 +73,19 @@ export class EmbeddedMap {
             }
             const state = view.mapContainer.state;
             const success = this.updateCodeBlockWithState(state);
-            if (success)
-                new Notice('Successfully copied another open Map View');
+            if (success) new Notice('成功复制另一个打开的地图视图');
         };
     }
 
     async updateCodeBlockWithState(state: MapState) {
         const sectionInfo = this.markdownContext.getSectionInfo(this.parentEl);
         if (!sectionInfo) {
-            new Notice('Unable to find section info');
+            new Notice('无法找到章节信息');
             return false;
         }
         const editor = getEditor(this.app);
         if (!editor) {
-            new Notice('Unable to find the current editor');
+            new Notice('无法找到当前编辑器');
             return false;
         } else {
             const lastLineLength = editor.getLine(sectionInfo.lineEnd).length;

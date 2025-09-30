@@ -368,7 +368,7 @@ export class AddFileControl extends leaflet.Control {
 
     verifyNoteSelected() {
         if (!this.view.display.controls.editModeTools.noteToEdit) {
-            new Notice('You must first select a note.');
+            new Notice('您必须先选择一个笔记。');
             return false;
         }
         return true;
@@ -451,10 +451,10 @@ export class AddFileControl extends leaflet.Control {
                                     new Notice(
                                         'The path was saved as an inline GeoJSON in the selected Edit Mode file.',
                                     );
-                                } else new Notice('Error converting file');
+                                } else new Notice('转换文件错误');
                             } catch (e) {
                                 console.error('Error converting file:', e);
-                                new Notice('Error converting file');
+                                new Notice('转换文件错误');
                             }
                         }
                     }
@@ -580,7 +580,7 @@ export class RoutingControl extends leaflet.Control {
             'click',
             async (ev: MouseEvent) => {
                 if (!this.view.display.routingSource) {
-                    new Notice('You must select a routing source first.');
+                    new Notice('您必须先选择一个路由源。');
                     return;
                 }
                 const result = await getMarkerFromUser(

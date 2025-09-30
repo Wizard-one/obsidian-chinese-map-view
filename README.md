@@ -1,31 +1,29 @@
-# Obsidian.md Map View
+# Obsidian.md 中文地图视图
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/esm7)
+## 简介
 
-## Intro
+这个插件为 [Obsidian.md](https://obsidian.md/) 引入了一个**交互式地图视图**。
+它搜索您的笔记中各种格式编码的地理位置和路径（见下文），将它们放在地图上，并提供许多工具与之交互。
 
-This plugin introduces an **interactive map view** for [Obsidian.md](https://obsidian.md/).
-It searches your notes for encoded geolocations and paths in various formats (see below), places them on a map and offers many tools to interact with them.
+它有效地将您的 Obsidian 库转变为一个**个人 GIS 系统**，为您的笔记、日志、旅行规划以及您使用 Obsidian 的几乎任何用途添加地理层。
 
-It effectively turns your Obsidian vault into a **personal GIS system** that adds a geographical layer to your notes, journals, trip planning and pretty much anything you use Obsidian for.
+您可以...
 
-You can...
+- 使用内置搜索添加位置（可选择利用 Google Places）。
+- 从各种来源保存地理位置。
+- 查看 GeoJSON、GPX、KML 和 TCX 格式的路径。
+- 在地图上绘制位置和形状。
+- 立即计算点之间的路线并获得驾驶/骑行/步行估算。
 
-- Add locations using a built-in search (optionally utilizing Google Places).
-- Save geolocations from a variety of sources.
-- View paths in GeoJSON, GPX, KML and TCX formats.
-- Draw locations and shapes on the map.
-- Instantly calculate routes between points and get driving/cycling/walking estimations.
+另外...
 
-Plus...
+- 使用复杂的显示规则自定义标记图标、徽章、形状、颜色、路径属性等。
+- 使用强大的查询系统。
+- 在笔记中嵌入地图，具有很高的控制级别。
+- 快速切换地图图层并保存预设。
+- 保存地图以供离线使用。
 
-- Customize marker icons, badges, shapes, colors, path properties and more using sophisticated display rules.
-- Use a powerful query system.
-- Embed maps in notes with great level of control.
-- Quickly switch between map layers and save presets.
-- Save maps for offline usage.
-
-And much, **much** more -- this is quite a powerful tool.
+还有更多，**更多**功能 -- 这是一个相当强大的工具。
 
 ![](img/sample.png)
 
@@ -35,151 +33,157 @@ And much, **much** more -- this is quite a powerful tool.
 
 ![](img/quick-embed.gif)
 
-I wrote this plugin because I wanted my ever-growing Zettelkasten to be able to answer questions like...
+我编写这个插件是因为我希望我不断增长的 Zettelkasten 能够回答以下问题...
 
-- When I get recommendations about cool places to visit, how do I save them in a way that I can recall later?
-- When I'm visiting somewhere, what interesting places do I know in the area?
-- When I'm conducting research for planning a trip, how do I lay out on a map options for places to eat, hike or sleep, combine them with prior knowledge, and save them for future reference?
+- 当我收到关于值得参观的酷地方的推荐时，如何以一种能够在以后回忆起来的方式保存它们？
+- 当我访问某个地方时，我知道该地区有哪些有趣的地方？
+- 当我为规划旅行进行研究时，如何在地图上布局用餐、徒步或住宿的选择，将它们与先前的知识结合，并为将来参考保存它们？
 
-Map View can integrate with your note-taking flow in order to answer all of these questions and much more.
+地图视图可以与您的笔记流程集成，以回答所有这些问题以及更多问题。
 
-Just like the Obsidian graph view lets you visualize associative relations between some of your notes, the map view lets you visualize geographic ones.
+正如 Obsidian 图表视图让您可视化某些笔记之间的关联关系一样，地图视图让您可视化地理关系。
 
-## With Obsidian Mobile
+## 🇨🇳 中国地图支持
 
-The main limitation of the plugin right now is that the Obsidian Mobile app has no location permission, so on mobile you cannot see your current location natively.
+本版本专门为中国用户优化，提供以下特色功能：
 
-To overcome this, Map View introduced a companion [Geo Helper app](#gps-location-support).
+- **内置高德地图**：默认提供高德地图作为地图源选项
+- **坐标转换**：自动处理 WGS84 到 GCJ02（火星坐标系）的坐标转换
+- **智能检测**：当使用包含"高德"或"autonavi.com"的地图源时自动应用坐标转换
+- **完美兼容**：所有标记、路径、搜索结果都能在高德地图上正确显示
+- **完全中文化**：界面、菜单、设置全部中文化
 
-## Support the Development
+## Obsidian Mobile 兼容性
 
-If you want to support the development of this plugin, please consider to [buy me a coffee](https://www.buymeacoffee.com/esm7).
+该插件目前的主要限制是 Obsidian Mobile 应用没有位置权限，因此在移动设备上您无法原生看到当前位置。
 
-## Quick How To
+为了克服这一点，地图视图引入了配套的 [Geo Helper 应用](#gps-位置支持)。
 
-Map View is a powerful tool with many ways to use it.
-If you wanna learn it thoroughly, you may wanna start from [understanding how it works](#understanding-map-view-parsing-location-data).
-But if you wanna dive right in and give it a try, or get a quick glimpse of what it can do, continue reading.
+## 快速入门
 
-### Log a Geolocation
+地图视图是一个功能强大的工具，有很多使用方法。
+如果您想彻底学习它，可能想从 [了解它的工作原理](#理解地图视图解析位置数据) 开始。
+但如果您想直接开始尝试，或快速了解它能做什么，请继续阅读。
 
-Here are a few examples for logging a favorite location you want to see in a map.
+### 记录地理位置
 
-**Option 1: from a Note**
+以下是几种记录您想在地图中看到的喜爱位置的示例。
 
-- Starting from a note, e.g. your daily note or a note referring to a trip plan, launch the Obsidian Command Palette and choose "Map View: add inline geolocation link".
-- A link in the format of `[](geo:)` will be added where your cursor is.
-- Start typing a location name inside the bracket, and some geolocation results will pop up. Choose one and your _inline location_ is complete.
+**选项 1：从笔记开始**
+
+- 从一个笔记开始，例如您的每日笔记或涉及旅行计划的笔记，启动 Obsidian 命令面板并选择"地图视图：添加内联地理位置链接"。
+- 一个格式为 `[](geo:)` 的链接将添加到您的光标位置。
+- 开始在括号内输入位置名称，一些地理位置结果将弹出。选择一个，您的 _内联位置_ 就完成了。
 
 ![](img/quick1.gif)
 
-(Note: the default geosearch provider requires you fill-in your email address, see [here](#location-search--auto-complete) for more details.)
+（注意：默认的地理搜索提供商需要您填写电子邮件地址，更多详情请参阅 [这里](#位置搜索和自动完成)。）
 
-**Option 2: from the Map**
+**选项 2：从地图开始**
 
-- Open Map View (e.g. from the Obsidian ribbon icon).
-- Search or locate a location, e.g. using the search tool.
-- Right-click the map and choose "new note here (front matter)" to create a note logging the selection point.
+- 打开地图视图（例如从 Obsidian 丝带图标）。
+- 搜索或定位位置，例如使用搜索工具。
+- 右键单击地图并选择"在此创建新笔记（前置内容）"以创建记录选择点的笔记。
 
-**Option 3: from the Map using Edit Mode**
+**选项 3：从地图使用编辑模式**
 
-- Open Map View.
-- Switch to Edit Mode using the pencil icon on the right.
-- Click the red "Choose Note" button to select which note you want to add items to.
-- Place markers or other shapes on the map using the tools that appeared below the pencil icon.
-- When in Edit Mode you can move or edit other markers and paths as well.
+- 打开地图视图。
+- 使用右侧的铅笔图标切换到编辑模式。
+- 点击红色"选择笔记"按钮选择您要添加项目的笔记。
+- 使用出现在铅笔图标下方的工具在地图上放置标记或其他形状。
+- 在编辑模式下，您还可以移动或编辑其他标记和路径。
 
-**There are many other ways to log geolocations in Map View**, see [here](#adding-a-location-to-a-note) for more details.
+**在地图视图中有许多其他记录地理位置的方法**，更多详情请参阅 [这里](#向笔记添加位置)。
 
-### Create a Trip Plan Map
+### 创建旅行计划地图
 
-There are many flows you can use to create custom maps, interact with them and use them for research and planning -- here's one that I typically use for trip planning.
+您可以使用许多流程来创建自定义地图，与它们交互并将它们用于研究和规划 -- 这是我通常用于旅行规划的一个流程。
 
-**Step 1: log some locations.**
+**步骤 1：记录一些位置。**
 
-For most trips, I like to use a single note with sections, for example:
+对于大多数旅行，我喜欢使用带有分节的单个笔记，例如：
 
 ```
-## To Visit
+## 要参观的地方
 
-- [Place 1](geo:...) tag:activity
-  - Some information about this place
-- [Place 2](geo:...) tag:activity
-  - Information about this place
+- [地点 1](geo:...) tag:activity
+  - 关于这个地方的一些信息
+- [地点 2](geo:...) tag:activity
+  - 关于这个地方的信息
 
-## To Eat
+## 要吃的地方
 
-- [Restaurant1](geo:...) tag:food
-  - Opening hours, other data...
-- [Restaurant2](geo:...) tag:food
-  - Opening hours, other data...
+- [餐厅1](geo:...) tag:food
+  - 营业时间，其他数据...
+- [餐厅2](geo:...) tag:food
+  - 营业时间，其他数据...
 ```
 
-I add the places using one of the methods above (by searching with "add inline geolocation link") or by one of the many other methods described below.
-Notice the [inline tags](#understanding-map-view-parsing-location-data), these can be used for custom filters and/or creating different icons for different types of places.
+我使用上述方法之一添加地点（通过"添加内联地理位置链接"搜索）或下面描述的许多其他方法之一。
+注意 [内联标签](#理解地图视图解析位置数据)，这些可以用于自定义过滤器和/或为不同类型的地方创建不同的图标。
 
-**Step 2: map them!**
+**步骤 2：绘制它们！**
 
-In the case of a single note, just click the note's menu (3 dots) and choose "focus (note name) in Map View".
-You should immediately see a map of all your locations, and if you spend some moments to configure [marker icons](#marker-icons), you can easily get different shapes and colors for your various tags.
+对于单个笔记，只需点击笔记的菜单（3 个点）并选择"在地图视图中聚焦（笔记名称）"。
+您应该立即看到所有位置的地图，如果您花一些时间配置 [标记图标](#标记图标)，您可以轻松为各种标签获得不同的形状和颜色。
 
-**Step 3: save this map**
+**步骤 3：保存此地图**
 
-You have a few options here.
+您在这里有几个选项。
 
-One thing you can do is to open the Presets section on the map and save the current view, then open it from Map View anytime.
+您可以做的一件事是打开地图上的预设部分并保存当前视图，然后随时从地图视图打开它。
 
-Another option is to save an embed: in Presets click 'Copy block' (or "Copy Map View code block" from the note menu), then paste the resulting code into a note.
+另一个选项是保存嵌入：在预设中点击"复制块"（或从笔记菜单中"复制地图视图代码块"），然后将结果代码粘贴到笔记中。
 
 ![](img/quick2.gif)
 
-**There are many more options of how to build a trip plan, present it and use it.**
-[This](https://www.reddit.com/r/ObsidianMD/comments/xi42pt/planning_a_vacation_with_map_view/) post gives a more detailed example, and diving into the details of how Map View works will help you find your own optimal flow.
+**有许多其他构建旅行计划、展示和使用它的选项。**
+[这篇](https://www.reddit.com/r/ObsidianMD/comments/xi42pt/planning_a_vacation_with_map_view/) 帖子给出了更详细的示例，深入了解地图视图工作原理的细节将帮助您找到自己的最佳流程。
 
-### Build Your Personal Geographic Information System (GIS)
+### 构建您的个人地理信息系统（GIS）
 
-The most powerful way to use Map View is to build a complete personal GIS (Geographic Information System) from your notes vault.
-I personally do this as follows.
+使用地图视图的最强大方式是从您的笔记库构建完整的个人 GIS（地理信息系统）。
+我个人按如下方式进行。
 
-**1. Collection**
+**1. 收集**
 
-This part isn't specific to Map View, but the main idea is that I [collect](https://en.wikipedia.org/wiki/Getting_Things_Done) pieces of information from various sources, that often contain some geographic information.
+这部分不是地图视图特有的，但主要思想是我从各种来源 [收集](https://en.wikipedia.org/wiki/Getting_Things_Done) 信息片段，这些信息通常包含一些地理信息。
 
-For example, I can save a Facebook post that recommends a new restaurant, clip a cool hike from a hiking group, or draft a quick note when a friend tells me about a place that I want to remember.
+例如，我可以保存推荐新餐厅的 Facebook 帖子，从徒步团体剪辑酷炫的徒步路线，或者当朋友告诉我一个我想记住的地方时起草快速笔记。
 
-I later turn these into notes, but of course if that's not how you do things, you can skip to Processing.
+我稍后将这些转化为笔记，但当然如果这不是您的做事方式，您可以跳到处理。
 
-**2. Processing**
+**2. 处理**
 
-When I turn my clipped pieces of information into notes, I add geolocations as follows.
+当我将我剪辑的信息片段转化为笔记时，我按如下方式添加地理位置。
 
-- For pieces of information that are _mainly geographical_, e.g. a restaurant recommendation, a hike or somewhere I may want to visit, I create a Zettelkasten note, then use the Map View "add geolocation (front matter) to current note" to tag the relevant geolocation.
-    - If the location isn't easy to find using a text search, I usually open a more specific mapping tool like a hiking map, locate the place that I want, copy it in lat,lng format and paste it into the same search box above.
-    - Alternatively, I sometimes prefer to locate it on the map, then right-click and "copy geolocation as front matter" (or create the note from the map in the first place).
-    - I then tag the complete note with some useful metadata. Examples include: `#hike`, `#season/spring`, `#dogs`, `#camping`, `#food`, `#food/pizza`, `#activity`, `#activity/kids`, `#not` (for negative recommendations).
-- For bulks of geographical information, like a list of recommended coffee shops in a city, I create a note and add all geolocations via inline geolocation links. I have the "add inline geolocation link" command mapped to `Alt+L` so I can easily start a location search while typing a note.
+- 对于 _主要是地理性_ 的信息片段，例如餐厅推荐、徒步路线或我可能想访问的地方，我创建一个 Zettelkasten 笔记，然后使用地图视图"向当前笔记添加地理位置（前置内容）"来标记相关的地理位置。
+    - 如果位置不容易通过文本搜索找到，我通常打开更具体的映射工具，如徒步地图，定位我想要的地方，以 lat,lng 格式复制它并粘贴到上面的同一搜索框中。
+    - 或者，我有时更喜欢在地图上定位它，然后右键单击并"复制地理位置为前置内容"（或首先从地图创建笔记）。
+    - 然后我用一些有用的元数据标记完整的笔记。示例包括：`#hike`、`#season/spring`、`#dogs`、`#camping`、`#food`、`#food/pizza`、`#activity`、`#activity/kids`、`#not`（用于负面推荐）。
+- 对于大量地理信息，如城市中推荐咖啡店的列表，我创建一个笔记并通过内联地理位置链接添加所有地理位置。我将"添加内联地理位置链接"命令映射到 `Alt+L`，这样我可以在输入笔记时轻松开始位置搜索。
 
-**3. Querying**
+**3. 查询**
 
-There are countless occasions that I query my Personal GIS.
+我查询个人 GIS 的场合无数。
 
-- When planning a trip I often look at the area that I'm visiting, sometimes saving it as a preset without any filter applied, and get a general understanding of what I know about the area.
-- I often query the system for a specific set of needs. For example, I obsessively collect information about dog-friendly activities around where I live, so when I want to go camping I query for `#dogs AND #sleep` (to search for dog-friendly camp sites) and to choose dining options I query for `#dogs AND #food`. See [here](#queries) to learn more about how queries work and what you can do with them.
-- When visiting an unknown area I frequently launch Map View from Obsidian Mobile to account for change in plans or finding what to do without planning in advance.
+- 在规划旅行时，我经常查看我要访问的区域，有时在不应用任何过滤器的情况下将其保存为预设，并大致了解我对该区域的了解。
+- 我经常查询系统以满足特定需求。例如，我痴迷地收集我居住地周围适合狗的活动信息，所以当我想去露营时，我查询 `#dogs AND #sleep`（搜索适合狗的露营地），选择用餐选项时我查询 `#dogs AND #food`。请参阅 [这里](#查询) 了解查询如何工作以及您可以用它们做什么。
+- 在访问未知区域时，我经常从 Obsidian Mobile 启动地图视图，以应对计划变更或在没有提前规划的情况下找到要做的事情。
 
-See also [this](https://www.reddit.com/r/ObsidianMD/comments/xi42pt/planning_a_vacation_with_map_view/) Reddit post about planning a vacation with Map View.
+另请参阅关于使用地图视图规划假期的 [这篇](https://www.reddit.com/r/ObsidianMD/comments/xi42pt/planning_a_vacation_with_map_view/) Reddit 帖子。
 
-## Understanding Map View: Parsing Location Data
+## 理解地图视图：解析位置数据
 
-Map View provides [several methods to log locations in notes](#adding-a-location-to-a-note) and can manage the technicalities for you.
-You can skip to that section if you want to just get started, or continue reading the more technical explanation below.
+地图视图提供 [几种在笔记中记录位置的方法](#向笔记添加位置)，可以为您管理技术细节。
+如果您想直接开始，可以跳到该部分，或继续阅读下面更技术性的解释。
 
-**To clarify, the best way to use Map View is to never enter a geolocation manually.**
-You will, however, need to understand the difference between the front matter and the inline formats, and decide when to use which.
+**澄清一下，使用地图视图的最佳方式是永远不要手动输入地理位置。**
+但是，您需要了解前置内容和内联格式之间的区别，并决定何时使用哪个。
 
-So, the plugin works by scanning your notes and parsing two types of location data.
+因此，插件通过扫描您的笔记并解析两种类型的位置数据来工作。
 
-First is a location tag in a note's [front matter](https://help.obsidian.md/Advanced+topics/YAML+front+matter):
+首先是笔记 [前置内容](https://help.obsidian.md/Advanced+topics/YAML+front+matter) 中的位置标签：
 
 <!-- prettier-ignore-start -->
 ```yaml
@@ -189,50 +193,50 @@ location: 40.6892494,-74.0466891
 ```
 <!-- prettier-ignore-end -->
 
-This is useful for notes that represent a single specific location.
+这对于表示单个特定位置的笔记很有用。
 
-There is an alternative syntax used by Map View previously: `location: [40.6892494, -74.0466891]`. While this format is compatible with [obsidian-leaflet](https://github.com/valentine195/obsidian-leaflet-plugin), it doesn't play very well with Obsidian's property editor. Both format are supported by the new one is encouraged for Obsidian version 1.4 and above.
+还有地图视图以前使用的替代语法：`location: [40.6892494, -74.0466891]`。虽然此格式与 [obsidian-leaflet](https://github.com/valentine195/obsidian-leaflet-plugin) 兼容，但它与 Obsidian 的属性编辑器配合不太好。两种格式都受支持，但对于 Obsidian 版本 1.4 及以上鼓励使用新格式。
 
-Another way that the plugin parses location data is through **inline location URLs** in the format of `[link-name](geo:40.68,-74.04)`, which allow multiple markers in the same note.
-To prevent the need to scan the full content of all your notes, it requires an empty `locations:` tag in the note front matter ('locations' and not 'location').
-(In most methods of entering geolocations Map View will do this automatically.)
-Example:
+插件解析位置数据的另一种方式是通过格式为 `[链接名称](geo:40.68,-74.04)` 的**内联位置 URL**，它允许同一笔记中有多个标记。
+为了防止需要扫描所有笔记的完整内容，它需要在笔记前置内容中有一个空的 `locations:` 标签（'locations' 而不是 'location'）。
+（在大多数输入地理位置的方法中，地图视图会自动执行此操作。）
+示例：
 
-```
+```markdown
 ---
 locations:
 ---
 
-# Trip Plan
+# 旅行计划
 
-Point 1: [Hudson River](geo:42.277578,-76.1598107)
-... more note content ...
+点 1：[哈德逊河](geo:42.277578,-76.1598107)
+... 更多笔记内容 ...
 
-Point 2: [New Haven](geo:41.2982672,-72.9991356)
+点 2：[纽黑文](geo:41.2982672,-72.9991356)
 ```
 
-Notes with multiple markers will contain multiple markers on the map with the same note name, and clicking on the marker will jump to the correct location within the note.
+具有多个标记的笔记将在地图上包含具有相同笔记名称的多个标记，点击标记将跳转到笔记中的正确位置。
 
-Inline locations also support **inline tags** in the format of `tag:dogs` (without the `#` sign). For example:
+内联位置还支持格式为 `tag:dogs`（不带 `#` 符号）的**内联标签**。例如：
 
+```markdown
+点 1：[哈德逊河](geo:42.277578,-76.1598107) tag:dogs
 ```
-Point 1: [Hudson River](geo:42.277578,-76.1598107) tag:dogs
-```
 
-This will add the tag `#dogs` specifically to that point, regardless of the note's own tags.
-This is useful for notes that contain tags of different types (e.g. a trip log with various types of locations).
-Note that the `tag:` format should be used **without** the `#` sign, because this sets the tag for the whole note.
-Map View will internally add `#` for the purpose of queries and marker icons, as explained below.
+这将向该特定点添加标签 `#dogs`，无论笔记自己的标签如何。
+这对于包含不同类型标签的笔记很有用（例如包含各种类型位置的旅行日志）。
+注意 `tag:` 格式应该**不带** `#` 符号使用，因为这会为整个笔记设置标签。
+地图视图将在内部为查询和标记图标的目的添加 `#`，如下面所解释的。
 
-Multiple inline tags can be separated with a whitespace: `[](geo:42.2,-76.15) tag:dogs tag:trip`.
+多个内联标签可以用空格分隔：`[](geo:42.2,-76.15) tag:dogs tag:trip`。
 
-Multiple inline locations can be added in the same line, and the tags that follow them will be associated to the location on the left, but the right-click editor context menu will not know to choose the location that was selected.
+多个内联位置可以添加在同一行中，跟随它们的标签将与左侧的位置关联，但右键单击编辑器上下文菜单将不知道选择被选中的位置。
 
-Instead of using a `locations:` YAML tag, you can use a custom note tag. See "tag name to denote inline geolocations" in the settings. (This also works with wildcards.)
-It will not be automatically added when you need it like the `locations:` YAML tag, however if you add an inline geolocation to an existing note where your custom tag is found, Map View will not add a `locations:` YAML tag.
-**IMPORTANT NOTE:** for the time being, using this feature (i.e. having a non-empty "tag name to denote inline geolocations") slows down Map View by an order of magnitude. I'm looking into speeding it up in future releases.
+您可以使用自定义笔记标签代替使用 `locations:` YAML 标签。请参阅设置中的"标记内联地理位置的标签名"。（这也适用于通配符。）
+它不会像 `locations:` YAML 标签那样在您需要时自动添加，但是如果您向找到自定义标签的现有笔记添加内联地理位置，地图视图将不会添加 `locations:` YAML 标签。
+**重要注意：** 目前，使用此功能（即具有非空的"标记内联地理位置的标签名"）会使地图视图变慢一个数量级。我正在寻找在未来版本中加速它的方法。
 
-For interoperability with Obsidian's property editor and possibly other plugins, Map View will also parse the syntax of:
+为了与 Obsidian 的属性编辑器和可能的其他插件互操作，地图视图还将解析以下语法：
 
 ```yaml
 location:
@@ -240,747 +244,548 @@ location:
     - '-94.5781416'
 ```
 
-And also:
+以及：
 
 ```yaml
 location:
     - 39.100105,-94.5781416
 ```
 
-## Adding a Location to a Note
+## 向笔记添加位置
 
-Map View offers many ways to add geolocations to notes.
+地图视图提供许多向笔记添加地理位置的方法。
 
-### Anywhere in Obsidian
+### 在 Obsidian 的任何地方
 
-Map View adds an Obsidian command named "New geolocation note", which you can map to a hotkey and use anywhere in Obsidian.
+地图视图向 Obsidian 添加了一个名为"新地理位置笔记"的命令，您可以将其映射到热键并在 Obsidian 的任何地方使用。
 
-This opens a dialog on which you can search (address or location based on your [configured geocoding provider](#changing-a-geocoding-provider)) or paste a URL using the built-in or custom [URL parsing rules](#url-parsing-rules).
+这会打开一个对话框，您可以在其中搜索（基于您 [配置的地理编码提供商](#更改地理编码提供商) 的地址或位置）或使用内置或自定义 [URL 解析规则](#url-解析规则) 粘贴 URL。
 
 ![](img/new-note-popup.gif)
 
-### In an Existing Note
+### 在现有笔记中
 
-There are multiple ways to add a geolocation to an existing note.
+有多种方法向现有笔记添加地理位置。
 
-1. Create an inline geolocation link in the format of `[](geo:)`, and if you start typing inside the link name (the brackets), Map View will initiate a location search. If you confirm one of the options, it will fill-in the location's coordinates. See more on this in the ["In-Note Location Search"](#location-search--auto-complete) section below.
+1. 创建格式为 `[](geo:)` 的内联地理位置链接，如果您开始在链接名称（括号）内输入，地图视图将启动位置搜索。如果您确认其中一个选项，它将填入位置的坐标。有关更多信息，请参阅下面的 ["笔记内位置搜索"](#位置搜索和自动完成) 部分。
 
-To make this more streamlined, Map View adds to Obsidian a command named 'Add inline geolocation link' which you can map to a keyboard shortcut.
+为了使这更简化，地图视图向 Obsidian 添加了一个名为"添加内联地理位置链接"的命令，您可以将其映射到键盘快捷键。
 
-2. Add a front matter geolocation by using the Obsidian command 'Add geolocation (front matter) to current note'. This opens the same dialog as "new geolocation note" which allows you to search for a location name or paste a [URL parsing rules](#url-parsing-rules).
+2. 通过使用 Obsidian 命令"向当前笔记添加地理位置（前置内容）"添加前置内容地理位置。这会打开与"新地理位置笔记"相同的对话框，允许您搜索位置名称或粘贴 [URL 解析规则](#url-解析规则)。
 
-3. If you have a geolocation in some other mapping service that you wish to log, e.g. from Google Maps, you can copy the URL or "lat,lng" geolocation from that service, right-click in your note and select "Paste as Geolocation". The supported services are configurable, see [below](#url-parsing-rules) for more details.
+3. 如果您在其他地图服务中有想要记录的地理位置，例如来自 Google 地图，您可以从该服务复制 URL 或"lat,lng"地理位置，在笔记中右键单击并选择"粘贴为地理位置"。支持的服务是可配置的，更多详情请参阅 [下面](#url-解析规则)。
 
-### From the Map
+### 从地图
 
-The map offers several tools to create notes or add markers to existing notes.
+地图提供几种工具来创建笔记或向现有笔记添加标记。
 
-1. Use "new note here" when right-clicking the map. This will create a new note (based on the template you can change in the settings) with the location that you clicked. You can create either an empty note with a front matter (single geolocation) or an empty note with an inline geolocation.
+1. 右键单击地图时使用"在此创建新笔记"。这将创建一个新笔记（基于您可以在设置中更改的模板），其中包含您点击的位置。您可以创建带有前置内容（单个地理位置）的空笔记或带有内联地理位置的空笔记。
 
 ![](img/new-note.png)
 
-The map can be searched using the tool on the upper-right side, so you can quickly jump to the place you want to mark.
-[URL parsing rules](#url-parsing-rules) also work here, so you can [copy a geolocation from Google Maps](#tip-copying-from-google-maps) (or any other service) and jump to it.
+可以使用右上方的工具搜索地图，因此您可以快速跳转到要标记的地方。
+[URL 解析规则](#url-解析规则) 在这里也起作用，因此您可以 [从 Google 地图复制地理位置](#提示从-google-地图复制)（或任何其他服务）并跳转到它。
 
 ![](img/search.gif)
 
-2. Using Edit Mode: click the pencil icon on the right, choose a note to edit by clicking the red button on the left, then add markers (or other shapes) using the marker tool below the pencil icon. Alternatively, when in Edit Mode, you can right-click anywhere on the map and select "Add to Edit Mode note".
+2. 使用编辑模式：点击右侧的铅笔图标，通过点击左侧的红色按钮选择要编辑的笔记，然后使用铅笔图标下方的标记工具添加标记（或其他形状）。或者，在编辑模式下，您可以右键单击地图上的任何地方并选择"添加到编辑模式笔记"。
 
-3. If you prefer to enter geolocations as text, use one of the "copy geolocation" options when you right-click the map and paste them in a note.
+3. 如果您更喜欢以文本形式输入地理位置，请在右键单击地图时使用"复制地理位置"选项之一，并将它们粘贴到笔记中。
 
 ![](img/copy.png)
 
-### Paste as Geolocation
+### 粘贴为地理位置
 
-Map View monitors the system clipboard, and when it is is detected to contain an encoded geolocation (e.g. a Google Maps "lat, lng" location), a "Paste as geolocation" entry is added to the editor context menu.
-For example, if you right-click a location in Google Maps and click the first item in the menu (coordinates in lat,lng format, see [below](#tip-copying-from-google-maps)), you can then paste it as a geolocation inside a note.
+地图视图监控系统剪贴板，当检测到它包含编码的地理位置（例如 Google 地图"lat, lng"位置）时，会向编辑器上下文菜单添加"粘贴为地理位置"条目。
+例如，如果您在 Google 地图中右键单击某个位置并点击菜单中的第一项（lat,lng 格式的坐标，请参阅 [下面](#提示从-google-地图复制)），您然后可以在笔记中将其粘贴为地理位置。
 
-Alternatively, you can right-click a URL or a supported formatted string that is already present in a note and choose "Convert to geolocation".
+或者，您可以右键单击笔记中已存在的 URL 或支持的格式化字符串，并选择"转换为地理位置"。
 
-By default Map View can parse URLs from two services: the OpenStreetMap "show address" link and a generic "lat, lng" encoding used by many URLs.
+默认情况下，地图视图可以解析来自两个服务的 URL：OpenStreetMap"显示地址"链接和许多 URL 使用的通用"lat, lng"编码。
 
-### Tip: Copying from Google Maps
+### 提示：从 Google 地图复制
 
-Google Maps on desktop web offers a very easy shortcut for copying universal `lat, lng` coordinates.
+桌面网页版 Google 地图为复制通用 `lat, lng` 坐标提供了非常简单的快捷方式。
 
-1. Right-click anywhere in the Google map.
-2. The first menu item should be the universal coordinates. By clicking it, the coordinates are copied to the clipboard.
-3. In any Obsidian note, right click and choose "paste as geolocation", or paste the coordinates into any Map View search box.
+1. 在 Google 地图中右键单击任何地方。
+2. 第一个菜单项应该是通用坐标。点击它，坐标就会复制到剪贴板。
+3. 在任何 Obsidian 笔记中，右键单击并选择"粘贴为地理位置"，或将坐标粘贴到任何地图视图搜索框中。
 
 ![](img/google-copy.png)
 
-## Embedding Maps in Notes
+## 在笔记中嵌入地图
 
-Map View supports the Obsidian code block format for embedding maps in notes.
-There are several ways to do this:
+地图视图支持 Obsidian 代码块格式在笔记中嵌入地图。
+有几种方法可以做到这一点：
 
-1. **Embedding an existing map.** To embed an existing map from Map View, including its query and any other settings, click 'Copy Block' from the map's Presets dropdown and paste the block into a note.
+1. **嵌入现有地图。** 要嵌入来自地图视图的现有地图，包括其查询和任何其他设置，请从地图的预设下拉菜单中点击"复制块"并将块粘贴到笔记中。
 
 ![](img/copy-block-embed.gif)
 
-1. **Embedding directly from a note.** From the editor, right-click and choose "embed a Map View" from the context menu, then enter a search term that will be used for the center of the map. Alternatively, there's an Obsidian command named "Map View: add an embedded map" that you can assign to a keyboard shortcut.
+2. **直接从笔记嵌入。** 从编辑器，右键单击并从上下文菜单中选择"嵌入地图视图"，然后输入将用于地图中心的搜索词。或者，有一个名为"地图视图：添加嵌入地图"的 Obsidian 命令，您可以将其分配给键盘快捷键。
 
 ![](img/quick-embed.gif)
 
-Once a map is embedded in a note, it represents a live view that updates according to your notes.
-Geolocations that are added or modified in the viewed area, and match the query that is saved in the embed, will be updated live.
+一旦地图嵌入到笔记中，它就代表一个根据您的笔记更新的实时视图。
+在查看区域中添加或修改的地理位置，并匹配嵌入中保存的查询，将实时更新。
 
-You can make light adjustments to the view from within the embed (change its zoom, pan or height), and if you want these to be saved, click the 'Save' button that will appear.
+您可以从嵌入内对视图进行轻微调整（更改其缩放、平移或高度），如果您希望保存这些调整，请点击将出现的"保存"按钮。
 
-To make bigger adjustments, such as updating the query or changing the view completely, use the Open button, make your changes, then click 'Update from open Map View' in the embed's View menu.
-Note that if you have multiple full instances of Map View open, 'Update from open Map View' may not do what you intended, and you may need to close the unwanted views first.
+要进行更大的调整，例如更新查询或完全更改视图，请使用"打开"按钮，进行更改，然后在嵌入的视图菜单中点击"从打开的地图视图更新"。
+注意，如果您有多个地图视图的完整实例打开，"从打开的地图视图更新"可能不会按您预期的那样工作，您可能需要首先关闭不需要的视图。
 
-Embeds also work really nicely in Canvas including live updates.
+嵌入在 Canvas 中也工作得很好，包括实时更新。
 
 ![](img/canvas.gif)
 
-### Advanced Additional Options
+### 高级附加选项
 
-- The query field in an embedded map supports a template parameter `$filename$`. If, for example, you wish to embed a map in a note template, you can edit the `query` field of the code block to be `"query":"linkedfrom:\"$filename$\" OR linkedto:\"$filename$\""`, and the map will always reference the host note.
+- 嵌入地图中的查询字段支持模板参数 `$filename$`。例如，如果您希望在笔记模板中嵌入地图，您可以编辑代码块的 `query` 字段为 `"query":"linkedfrom:\"$filename$\" OR linkedto:\"$filename$\""`，地图将始终引用主机笔记。
 
-**Known annoyance:** the `$filename$` replacement is currently performed when processing the code block and sent to Map View as a final result. Therefore, if you edit the embed interactively (e.g. by zoom or pan and clicking Save), the `query` field will be overwritten with the actual file name rather than the template.
+**已知烦恼：** `$filename$` 替换目前在处理代码块时执行，并作为最终结果发送到地图视图。因此，如果您交互式编辑嵌入（例如通过缩放或平移并点击保存），`query` 字段将被实际文件名覆盖，而不是模板。
 
-- The JSON in the embedded map code block supports an `autoFit` boolean flag. When set to `true` (i.e. add `"autoFit":true` to the code block's JSON), the map will load with the given pan and zoom, but will then perform an auto-fit and override further zoom and pan changes. This has the annoyance of animating zoom/pan if the saved state is different than the auto-fitted one (click Save to freeze a new state in such a case). I eventually want to bake this nicely to the UI with some more reasonable behaviors.
+- 嵌入地图代码块中的 JSON 支持 `autoFit` 布尔标志。当设置为 `true`（即向代码块的 JSON 添加 `"autoFit":true`）时，地图将以给定的平移和缩放加载，但然后将执行自动适应并覆盖进一步的缩放和平移更改。如果保存的状态与自动适应的状态不同，这会有缩放/平移动画的烦恼（在这种情况下点击保存以冻结新状态）。我最终想将这个很好地集成到 UI 中，具有一些更合理的行为。
 
-- The embedded map code block also supports an optional `customViewSettings` object, which allows for some adjustments to the map's UI. Properties and their defaults are defined in [`embeddedMap.ts`](https://github.com/esm7/obsidian-map-view/blob/master/src/embeddedMap.ts#L31-L47).
+- 嵌入地图代码块还支持可选的 `customViewSettings` 对象，它允许对地图的 UI 进行一些调整。属性及其默认值在 [`embeddedMap.ts`](https://github.com/esm7/obsidian-map-view/blob/master/src/embeddedMap.ts#L31-L47) 中定义。
 
-## Paths
+## 路径
 
 ![](img/paths-basic.png)
 
-Map View supports paths in a variety of formats and usage patterns.
-Somewhat similarly to markers, there is a distinction between **stand-alone path files** and **inline paths**.
+地图视图支持各种格式和使用模式的路径。
+与标记有些类似，**独立路径文件**和**内联路径**之间有区别。
 
-### Stand-Alone Path Files
+### 独立路径文件
 
-Stand-alone path files can be any GPX, KML, TCX or GeoJSON files in your vault.
-Somewhat similarly to front matter geolocations, Map View collects everything from your vault and displays paths based on [display rules](#marker--path-display-rules) and [filters](#queries).
+独立路径文件可以是您库中的任何 GPX、KML、TCX 或 GeoJSON 文件。
+与前置内容地理位置有些类似，地图视图从您的库中收集所有内容，并基于 [显示规则](#标记和路径显示规则) 和 [过滤器](#查询) 显示路径。
 
-Without any filters present, with the default settings, any supported path file in your vault will be displayed using the default path display style.
+没有任何过滤器存在，使用默认设置，您库中任何支持的路径文件都将使用默认路径显示样式显示。
 
-Stand-alone paths can be included or excluded using many of the query operators like `path`, `name` and `linkedfrom`.
+独立路径可以使用许多查询运算符如 `path`、`name` 和 `linkedfrom` 包含或排除。
 
-There is no notion of tags for stand-alone paths, so in order to apply display rules to them, you have a couple of other options:
+独立路径没有标签的概念，因此为了对它们应用显示规则，您有几个其他选项：
 
-- Include a relevant string in the file name and use the `path` or `name` operators.
-- Use the `linkedfrom` operator, e.g. have a note "my runs" that links to all your GPX tracks, and use `linkedfrom:"my runs"` to apply display rules to these paths.
+- 在文件名中包含相关字符串并使用 `path` 或 `name` 运算符。
+- 使用 `linkedfrom` 运算符，例如有一个链接到所有 GPX 轨道的"我的跑步"笔记，并使用 `linkedfrom:"我的跑步"` 对这些路径应用显示规则。
 
-Here are a few options for how to add stand-alone paths to your vault:
+以下是向您的库添加独立路径的几个选项：
 
-1. Use Obsidian's "insert attachment" command to insert a path file (e.g. a GPX) as an embed to a note you are working on. Although a path does not need to be referenced from a note to be shown in the map, it is often useful to put paths in contexts, and this command copies the file into the vault and adds it to a note in one step.
-2. From Map View, enter Edit Mode by clicking the pencil icon on the right side, click the file icon, then click "import a path as vault attachment". The selected file will be added to the vault under your default attachments folder.
-3. Just copy the file into your vault using your system's file explorer. It should be automatically recognized and appear.
+1. 使用 Obsidian 的"插入附件"命令将路径文件（例如 GPX）作为嵌入插入到您正在工作的笔记中。虽然路径不需要从笔记中引用才能在地图中显示，但将路径放在上下文中通常很有用，这个命令一步就将文件复制到库中并将其添加到笔记中。
+2. 从地图视图，通过点击右侧的铅笔图标进入编辑模式，点击文件图标，然后点击"导入路径作为库附件"。选定的文件将添加到您的默认附件文件夹下的库中。
+3. 只需使用系统的文件资源管理器将文件复制到您的库中。它应该会自动识别并出现。
 
-### Inline Paths
+### 内联路径
 
-Map View supports GeoJSON paths stored in notes using a code block of type `geojson`.
-By default, a fenced code block with type `geojson` will be rendered by Map View inside the note.
+地图视图支持使用类型为 `geojson` 的代码块存储在笔记中的 GeoJSON 路径。
+默认情况下，类型为 `geojson` 的围栏代码块将由地图视图在笔记内渲染。
 
-Unlike stand-alone path files, inline paths support tags by adding a line of the form `tag:a tag:b` right below the code block.
-Also, another advantage of inline paths is that they can be modified using the Edit Mode tools.
+与独立路径文件不同，内联路径通过在代码块下方添加格式为 `tag:a tag:b` 的行来支持标签。
+此外，内联路径的另一个优势是它们可以使用编辑模式工具进行修改。
 
-For example, the following code block defines a line with the tag `#hike`:
+例如，以下代码块定义了一条带有标签 `#hike` 的线：
 
-````
+````markdown
 ```geojson
-{"type":"Feature","properties":{},"geometry":{"type":"LineString","coordinates":[[13.754839,42.030225],[14.033704,42.045011]]}}
+{
+    "type": "Feature",
+    "properties": {},
+    "geometry": {
+        "type": "LineString",
+        "coordinates": [
+            [
+                13.754839,
+                42.030225
+            ],
+            [
+                14.033704,
+                42.045011
+            ]
+        ]
+    }
+}
 ```
+
 tag:hike
 ````
 
-The easiest way to add an inline path to a note is using Map View's Edit Mode.
-To enter Edit Mode, click the pencil button on the right, or the "Edit" drop-down on the left. Then choose a note to edit.
-From there you can either:
+向笔记添加内联路径的最简单方法是使用地图视图的编辑模式。
+要进入编辑模式，点击右侧的铅笔按钮，或左侧的"编辑"下拉菜单。然后选择要编辑的笔记。
+从那里您可以：
 
-1. Draw a path on the map using the Edit Mode tools on the right. When done, the path will be added to the selected note.
-2. From the edit mode tools on the right, click the file icon, then click "import a path and add to Edit Mode note". The path will be converted to GeoJSON and added as an inline path to your selected note.
+1. 使用右侧的编辑模式工具在地图上绘制路径。完成后，路径将添加到选定的笔记中。
+2. 从右侧的编辑模式工具中，点击文件图标，然后点击"导入路径并添加到编辑模式笔记"。路径将转换为 GeoJSON 并作为内联路径添加到您选定的笔记中。
 
-(Note: You will not see the path appear when done if it is excluded from the current filter.)
+（注意：如果路径被当前过滤器排除，您不会看到路径出现。）
 
-### Styling Paths
+### 样式化路径
 
-Similarly to markers, the way paths are displayed on the map can be heavily customized using powerful [display rules](#marker--path-display-rules).
-There are two main differences between markers and paths in this regard:
+与标记类似，路径在地图上的显示方式可以使用强大的 [显示规则](#标记和路径显示规则) 进行大量自定义。
+在这方面，标记和路径之间有两个主要区别：
 
-1. Paths have different properties available for styling.
-2. Stand-alone path files do not support tags, so in order to reference them with display rules, you will need to use names or `linkedto` queries.
+1. 路径有不同的可用于样式化的属性。
+2. 独立路径文件不支持标签，因此为了用显示规则引用它们，您需要使用名称或 `linkedto` 查询。
 
-See [here](#path-properties) for more details.
+更多详情请参阅 [这里](#路径属性)。
 
-## Queries
+## 查询
 
-Map View supports powerful queries that are roughly similar to Obsidian's query format.
+地图视图支持与 Obsidian 查询格式大致相似的强大查询。
 
 ![](img/query.gif)
 
-The query string can contain the following _search operators_:
+查询字符串可以包含以下 _搜索运算符_：
 
-- `tag:#...` to search for notes or markers tagged with a specific tag.
-    - This works on both whole notes (`#hiking`) and inline tags for specific markers (`tag:hiking`).
-    - You can also use wildcards like in [tag rules](#tag-rules), e.g. `tag:#sleep*` will match `#sleep` but also `#sleep/camping`.
-- `name:...` to search for markers that their name contains the given string.
-    - For front-matter geolocations this matches the file name.
-    - For inline geolocations this matches the link name and **ignores** the file name (if you want to always match the file name, use `OR` with `path:`).
-- `path:...` to search by the note path.
-    - This operator will include all the markers in the path that matches the query.
-- `linkedto:...` includes notes that contain a specific link.
-    - This operator will include a note (with all the markers in it) if it has a link name that matches the query.
-    - For example, if you have a note named `Cave Hikes` and you have geolocated notes that **link to it** (e.g. include `[[Cave Hikes]]` as a link), include them by the filter `linkedto:"Cave Hikes"`.
-    - Anything that resolves into a legal Obsidian link will work, e.g. both a note name ('Cave Hikes') or a path will do, but a partial name will not.
-- `linkedfrom:...` includes notes that are linked from a specific note, and also the origin note itself.
-    - This operator will include a note (with all the markers in it) if it is linked **from** the note mentioned in the query.
-    - For example, if you have a note named `Trip to Italy` with links to various geolocated notes (e.g. of places you want to visit or a trip log), the query `linkedfrom:"Trip to Italy"` will filter only for those markers.
-    - Anything that resolves into a legal Obsidian link will work, e.g. both a note name ('Cave Hikes') or a path will do, but a partial name will not.
-    - Obsidian heading and block links are supported: if a link in the 'from' file includes a heading or a block link, it will match only front-matter markers or inline markers _within that heading or block_.
-    - The Obsidian Plugin ["Copy Block Link"](https://github.com/mgmeyers/obsidian-copy-block-link) makes this extra useful.
-- `lines:x-y` includes only inline markers that are defined in the given line range in their note.
-    - For example, `lines:20-30` includes only inline geolocations that are defined in lines 20 to 30 in the file that contains them.
+- `tag:#...` 搜索用特定标签标记的笔记或标记。
+    - 这适用于整个笔记（`#hiking`）和特定标记的内联标签（`tag:hiking`）。
+    - 您也可以使用通配符，如 [标签规则](#标签规则) 中的那样，例如 `tag:#sleep*` 将匹配 `#sleep` 但也匹配 `#sleep/camping`。
+- `name:...` 搜索名称包含给定字符串的标记。
+    - 对于前置内容地理位置，这匹配文件名。
+    - 对于内联地理位置，这匹配链接名称并**忽略**文件名（如果您想始终匹配文件名，请与 `path:` 一起使用 `OR`）。
+- `path:...` 按笔记路径搜索。
+    - 此运算符将包括路径匹配查询的所有标记。
+- `linkedto:...` 包括包含特定链接的笔记。
+    - 此运算符将包括具有匹配查询的链接名称的笔记（及其中的所有标记）。
+    - 例如，如果您有一个名为 `洞穴徒步` 的笔记，并且您有**链接到它**的地理定位笔记（例如包含 `[[洞穴徒步]]` 作为链接），请通过过滤器 `linkedto:"洞穴徒步"` 包含它们。
+    - 任何解析为合法 Obsidian 链接的内容都将工作，例如笔记名称（'洞穴徒步'）或路径都可以，但部分名称不行。
+- `linkedfrom:...` 包括从特定笔记链接的笔记，以及原始笔记本身。
+    - 此运算符将包括**从**查询中提到的笔记链接的笔记（及其中的所有标记）。
+    - 例如，如果您有一个名为 `意大利之旅` 的笔记，其中包含到各种地理定位笔记的链接（例如您想访问的地方或旅行日志），查询 `linkedfrom:"意大利之旅"` 将仅过滤这些标记。
+    - 任何解析为合法 Obsidian 链接的内容都将工作，例如笔记名称（'洞穴徒步'）或路径都可以，但部分名称不行。
+    - 支持 Obsidian 标题和块链接：如果'from'文件中的链接包含标题或块链接，它将仅匹配该标题或块内的前置内容标记或内联标记。
+    - Obsidian 插件 ["复制块链接"](https://github.com/mgmeyers/obsidian-copy-block-link) 使这个额外有用。
+- `lines:x-y` 仅包括在其笔记中给定行范围内定义的内联标记。
+    - 例如，`lines:20-30` 仅包括在包含它们的文件的第 20 到 30 行中定义的内联地理位置。
 
-All operators are case insensitive.
+所有运算符都不区分大小写。
 
-You can combine the above with _logical operators_: `AND`, `OR`, `NOT`, and grouping with parenthesis.
-**This differs from Obsidian's own query language which uses `-` instead of `NOT` and treats spaces as 'AND'.**
+您可以将上述内容与 _逻辑运算符_ 结合：`AND`、`OR`、`NOT`，以及使用括号分组。
+**这与 Obsidian 自己的查询语言不同，Obsidian 使用 `-` 而不是 `NOT`，并将空格视为 'AND'。**
 
-For examples:
+示例：
 
-- `linkedfrom:"Trip to Italy" AND tag:#wine` can include places you linked from your trip to Italy, or are within that note itself, and are tagged with `#wine`.
-- `tag:#hike AND tag:#dogs` can include hikes you marked as suitable for dogs.
-- `tag:#hike AND (tag:#dogs OR tag:#amazing) AND NOT path:"bad places"`
+- `linkedfrom:"意大利之旅" AND tag:#wine` 可以包括您从意大利之旅链接的地方，或在该笔记本身内，并标记有 `#wine`。
+- `tag:#hike AND tag:#dogs` 可以包括您标记为适合狗的徒步。
+- `tag:#hike AND (tag:#dogs OR tag:#amazing) AND NOT path:"坏地方"`
 
-There are many creative ways to organize your notes with geolocations that utilize these query abilities.
-You may represent location types with tags (e.g. `#hike` or `#restaurant`), or use tags to represent traits of places (`#hike/summer`, `#hike/easy`).
-You can use paths for indexes using Zettelkasten back links (e.g. link to "Hikes that I Want" from notes you want to denote as such), then use `linkedto:` to find places that link to it.
-And/or you can have notes to plan a trip and link to places from it, then use `linkedfrom:` to focus on your plan.
+有许多创造性的方法来组织带有地理位置的笔记，利用这些查询能力。
+您可以用标签表示位置类型（例如 `#hike` 或 `#restaurant`），或使用标签表示地方的特征（`#hike/summer`、`#hike/easy`）。
+您可以使用路径进行索引，使用 Zettelkasten 反向链接（例如从您想要表示的笔记链接到"我想要的徒步"），然后使用 `linkedto:` 找到链接到它的地方。
+和/或您可以有笔记来规划旅行并从中链接到地方，然后使用 `linkedfrom:` 专注于您的计划。
 
-In all cases you can [save presets](#Presets) that include the filter or sub-filters of it.
+在所有情况下，您都可以 [保存预设](#预设)，包括过滤器或其子过滤器。
 
-## Marker & Path Display Rules
+## 标记和路径显示规则
 
 ![](img/display-rules.png)
 
-Map View includes a powerful mechanism that allows you to customize map markers and path display properties based on a flexible rules system.
-These are called Display Rules.
+地图视图包括一个强大的机制，允许您基于灵活的规则系统自定义地图标记和路径显示属性。
+这些被称为显示规则。
 
-Display rules are made of a **query**, which is the same as discussed [here](#queries), and various properties to apply to a marker or a path that match the query.
-When Map View tries to decide how to display a marker or a path, it starts from the Default display rule, which has a certain set of properties (e.g. a blue marker with a circle). It then tests the rest of the display rules by order, and for each rule with a matching query, overwrites whatever properties that rule sets.
+显示规则由一个**查询**组成，这与 [这里](#查询) 讨论的相同，以及要应用到匹配查询的标记或路径的各种属性。
+当地图视图尝试决定如何显示标记或路径时，它从默认显示规则开始，该规则具有某一组属性（例如带有圆圈的蓝色标记）。然后它按顺序测试其余的显示规则，对于每个匹配查询的规则，覆盖该规则设置的任何属性。
 
-For example, the default rule for markers may be a blue marker color with an `fa-circle` icon. If the marker also matches a rule below the default one (e.g. a rule like `tag:#food`), and that rule sets just the icon to `fa-utensils`, the resulting marker will be blue (because the 2nd rule did not override the color) with an `fa-utensils` icon.
+例如，标记的默认规则可能是带有 `fa-circle` 图标的蓝色标记颜色。如果标记还匹配默认规则下面的规则（例如像 `tag:#food` 这样的规则），并且该规则只将图标设置为 `fa-utensils`，则结果标记将是蓝色的（因为第二个规则没有覆盖颜色）带有 `fa-utensils` 图标。
 
-(Note to Map View users prior to version 6.0.0: this is the same way Marker Icons worked before, except that rules use _queries_ rather than tags, allowing more flexibility.)
+（注意对于 6.0.0 版本之前的地图视图用户：这与标记图标之前的工作方式相同，除了规则使用 _查询_ 而不是标签，允许更多灵活性。）
 
-To edit display rules, open the plugin settings, and click the button under the "Marker & Path Display Rules" section.
-You will see the list of the currently-active rules. You can add new rules, change the order of rules (except the default which must be first), and edit existing rules.
-When editing a rule, you will be able to set various properties that the rule can apply. All these properties are optional, and will overwrite the default (or prior matching rules) for every marker or path that will match its query.
+要编辑显示规则，请打开插件设置，并点击"标记和路径显示规则"部分下的按钮。
+您将看到当前活动规则的列表。您可以添加新规则、更改规则顺序（除了必须是第一个的默认规则）以及编辑现有规则。
+编辑规则时，您将能够设置规则可以应用的各种属性。所有这些属性都是可选的，并将覆盖匹配其查询的每个标记或路径的默认（或先前匹配规则）。
 
 ![](img/edit-display-rule.png)
 
-### Marker Icon Properties
+### 标记图标属性
 
-Icons are based on either [emojis](https://emojipedia.org) or [Font Awesome](https://fontawesome.com/), so to add a marker icon you'll need to copy the emoji or find the name in the Font Awesome catalog.
-Additionally, there are various marker properties (shape, color and more) that are based on [Leaflet.ExtraMarkers](https://github.com/coryasilva/Leaflet.ExtraMarkers#properties).
-An additional shape of `simple-circle`, that draws a circle at the given color without a pin shape, is supported on top of these.
+图标基于 [表情符号](https://emojipedia.org) 或 [Font Awesome](https://fontawesome.com/)，因此要添加标记图标，您需要复制表情符号或在 Font Awesome 目录中找到名称。
+此外，还有各种基于 [Leaflet Awesome Markers](https://github.com/lennardv2/Leaflet.awesome-markers) 的标记属性（形状、颜色等）。
 
-For example, if you want markers with the `#travel` tag to have a bus icon, add a display rule with the query `tag:#travel`. Then click Edit, search the Font Awesome catalog for the appropriate icon (in this case `fa-bus`), and enter that in the 'icon' box.
+详细文档请参阅 [下面](#标记图标) 的部分。
 
-Alternatively, just paste an emoji of a bus (e.g. from [Emojipedia](https://emojipedia.org)) into the icon name box.
+### 路径属性
 
-### Marker Badge
+对于路径，有各种样式选项可用于线条颜色、宽度等。
 
-You can add more information to markers using **badges**, which are little circles that are added in the corners of markers based on criteria that you choose.
-Up to 4 badges are supported per marker.
-**The natural use case for badges is when you can add additional information on top of a marker.** For example, if you have an icon for `#food` markers, you can add badges that would apply to restaurants with vegan options, gluten-free, dog-friendly, etc.
+详细文档请参阅 [下面](#路径属性) 的部分。
 
-Display rules can mix icon properties with badges in any way you see fit.
+### 预设
 
-To add a badge to a display rule, in the display rule edit dialog, paste an emoji or up to 2 characters into the Symbol box. Markers that match the rule will have that badge, and possibly other badges from other matching display rules, starting from the top-left corner clockwise.
+预设让您保存当前地图状态（查询、缩放、位置）并稍后恢复。
 
-Badges can have a symbol, a text color, a background color, and a border in the syntax of a CSS [border](https://developer.mozilla.org/en-US/docs/Web/CSS/border) property, e.g. `1px solid black`.
+使用控制面板中的预设部分。
 
-**Warning:** having hundreds or thousands of badges displayed at once on the map can be resource-intensive for the rendering engine, especially on mobile. In this case, consider increasing the "max cluster size in pixels" setting to display less markers at once.
+- 点击"保存当前"以保存当前地图状态。
+- 点击预设旁边的 ✓ 以加载它。
+- 点击"设为默认"以使地图视图始终以此状态打开。
+- 点击"复制块"以获取用于 [嵌入地图](#在笔记中嵌入地图) 的代码块。
 
-### Path Properties
+![](img/presets.gif)
 
-Paths work similarly to markers, in the way that their style starts from the default rule, and properties of matching rules overwrite each other.
-Like markers, you can set a rule like `tag:#hike` to a path and set to rule to have `red` for color.
+(注意：预设支持可选的 ID，这样如果您在多个设备上使用 Obsidian，相同的预设可以在所有设备上可用。要设置 ID，请编辑预设的名称以包含 `|ID`，例如 `我的地图|abc123`。具有相同 ID 的预设将在设备之间同步。)
 
-The most useful properties to set for paths are `color`, `weight` and `opacity`, and a full list for advanced users (editable via JSON, see below) can be found [here](https://leafletjs.com/reference.html#path).
+## 高级功能
 
-One key difference from markers is that stand-alone path files do not have a way to attach a tag to them; if you want to style some paths differently than others, you can use other query types, like name or `linkedfrom`. For example, you can have a central note named "My Runs" that will link to all the GPX files you want styled differently, and use a `linkedfrom` query in a display rule that will set these to red. See more about how to write such queries [here](#queries).
+### 标记图标
 
-Also, paths do not supported badges, and there is no preview available for them at the moment in the edit dialog.
+地图视图使用 [Font Awesome 图标](https://fontawesome.com/icons)，您可以在显示规则中引用它们以创建自定义标记图标。
 
-### Advanced: Editing Rules as JSON
+要设置标记图标，请创建一个 [显示规则](#标记和路径显示规则)，在其中设置图标字段为相关的 Font Awesome 名称，例如 `fa-camera`。
 
-The Edit Rule dialog allows you to directly edit a display rule as JSON, opening a few more options and control than the GUI provides.
+除了图标之外，您还可以设置标记形状和颜色（在相同的显示规则或另一个规则中）。
 
-- More options for marker icons can be found in [Leaflet.ExtraMarkers](https://github.com/coryasilva/Leaflet.ExtraMarkers#properties) properties. Note that some of these properties are known to not work with Map View.
-- Path options reference can be found [here](https://leafletjs.com/reference.html#path).
-- Marker badges have one more advanced property that is not present in the UI, `cssFilters`. This accepts a valid CSS `filter` string as defined [here](https://developer.mozilla.org/en-US/docs/Web/CSS/filter). For example, `"cssFilters": "grayscale(100%) brightness(0.8)"` can make an emoji grayscale and slightly dimmer.
+可用的标记形状包括：
 
-## Search & Auto-Complete
+- `circle`（圆形）
+- `square`（正方形）
+- `star`（星形）
+- `penta`（五边形）
 
-Map View adds an Obsidian command named 'Add inline geolocation link', that you can (and encouraged) to map to a keyboard shortcut, e.g. `Ctrl+L` or `Ctrl+Shift+L`.
-This command inserts an empty inline location template: `[](geo:)`.
+可用的标记颜色包括：
 
-When editing an inline location in this format, whether if you added it manually or using the command, if you start entering a link name, Map View will start offering locations based on a geocoding service.
-Selecting one of the suggestions will fill-in the coordinates of the chosen locations and _not_ change your link name (assuming you prefer your own name rather than the formal one offered by the geocoding service).
+- `red`（红色）
+- `darkred`（深红）
+- `lightred`（浅红）
+- `orange`（橙色）
+- `beige`（米色）
+- `green`（绿色）
+- `darkgreen`（深绿）
+- `lightgreen`（浅绿）
+- `blue`（蓝色）
+- `darkblue`（深蓝）
+- `lightblue`（浅蓝）
+- `purple`（紫色）
+- `darkpurple`（深紫）
+- `pink`（粉色）
+- `cadetblue`（军蓝）
+- `white`（白色）
+- `gray`（灰色）
+- `lightgray`（浅灰）
+- `black`（黑色）
 
-![](img/geosearch-suggest.gif)
+您还可以通过在显示规则中设置"标记大小"字段来设置相对标记大小。值为 `tiny`、`small`、`normal`、`large` 或 `extra-large`。
 
-If your note is not yet marked as one including locations (by a `locations:`) tag in the front matter, this is added automatically.
+#### 标记徽章
 
-**Important:** in order to use the default search provider (OSM Nominatim), you need to specify an e-mail address in the plugin settings.
-**This does not require any registration.**
-It is only because this free provider has limited resources and they need to be able to make sure no single user taxes the system.
+地图视图还支持标记徽章，即添加到标记底部的小图标或文本。
 
-### Changing a Geocoding Provider
+这些可以在显示规则中设置，类似于标记图标。如果设置徽章，您可以设置：
 
-By default, Map View is configured to use OpenStreetMap as the search provider.
-If you prefer to use the Google Maps search, you can configure this in the plugin settings.
+- **图标或文本**：徽章图标（使用 Font Awesome 名称如 `fa-camera`）或要显示的徽章文本。
+- **背景颜色**：徽章的背景颜色，使用与标记颜色相同的颜色名称。
 
-The Google Geocoding API is practically free or very cheap for normal note-taking usage, but you'd need to setup a project and obtain an API key from Google.
-See [here](https://developers.google.com/maps/documentation/javascript/get-api-key) for more details.
+更多详情请参阅 [文档中的此部分](https://github.com/esm7/obsidian-map-view?tab=readme-ov-file#marker-badge)。
 
-If you want, you can add to your API key the slightly more expensive [Places API](https://developers.google.com/maps/documentation/places/web-service/cloud-setup) (now called "Google Places (New)"), then turn on "Use Google Places for searches" in the Map View settings.
-For most reasonable note-taking usage, you will not likely go beyond the Places API free tier.
+### 路径属性
 
-**Note:** usage of any geocoding provider is at your own risk, and it's your own responsibility to verify you are not violating the service's terms of usage.
-The free OpenStreetMap provider (Nominatim) has limited resources, therefore Map View limits the rate of queries you can send to it, and requires per-user identification by e-mail as stated above.
+对于路径，地图视图支持以下显示规则属性：
 
-### Google Places Templates
+- **线条颜色**：路径的颜色，使用标准颜色名称如 `red`、`blue` 等，或十六进制颜色如 `#ff0000`。
+- **线条宽度**：路径的宽度（以像素为单位），例如 `3`。
+- **线条不透明度**：路径的不透明度，从 0.0（完全透明）到 1.0（完全不透明）。
+- **线条样式**：路径的样式，可以是 `solid`、`dashed` 或 `dotted`。
 
-When using Google Maps Places API, templates can extract additional result data.
+更多详情请参阅 [文档中的此部分](https://github.com/esm7/obsidian-map-view?tab=readme-ov-file#path-properties)。
 
-This has two steps:
+### 位置搜索和自动完成
 
-1. Under "Google Places data fields to query", you need to specify in the plugin configuration what fields you want to be received in the Google Places search results. See [here](https://developers.google.com/maps/documentation/places/web-service/place-details#fieldmask) the list of available fields. Enlist any fields you want returned in queries using a comma-delimited list, e.g. `id,types,businessStatus`.
-2. You can refer to these fields in the Map View "new note template" using the syntax `{{googleMapsPlacesData.fieldName}}`. For example, the following template will populate a `place_id` YAML field in your note's front matter with the `id` field returned from Google places, and add a tag like `#gym` using the `types` field (this assumes you defined the query fields in step 1 by the given example):
+地图视图内置了位置搜索功能，可以在多个地方使用：
 
-```
+1. 在地图搜索框中
+2. 在"添加内联地理位置链接"对话框中
+3. 直接在笔记中输入 `[](geo:)` 格式的链接时
+
+#### 更改地理编码提供商
+
+默认情况下，地图视图使用 OpenStreetMap 的 Nominatim 服务进行地理编码。但是，您可以在设置中将其更改为 Google Places 或 Google Geocoding。
+
+要使用 Google 服务，您需要：
+
+1. 获取 Google Maps API 密钥
+2. 在插件设置中输入 API 密钥
+3. 选择您想要的 Google 服务
+
+**注意**：使用 Google 服务可能会产生费用，请查看 Google 的定价信息。
+
+### 自定义"在...中打开"操作
+
+您可以配置自定义"在...中打开"操作，这些操作将出现在标记的右键菜单中。这允许您在外部应用程序或网站中打开位置。
+
+要添加自定义"在...中打开"操作：
+
+1. 转到插件设置
+2. 找到"自定义'在...中打开'操作"部分
+3. 添加一个新操作，指定名称和 URL 模板
+
+URL 模板可以包含以下占位符：
+
+- `{lat}` - 纬度
+- `{lng}` - 经度
+- `{name}` - 位置名称
+
+例如，要添加在百度地图中打开的操作，您可以使用：
+
+- 名称：`百度地图`
+- URL：`https://api.map.baidu.com/marker?location={lat},{lng}&title={name}`
+
+### URL 解析规则
+
+地图视图可以解析来自各种地图服务的 URL，以提取地理位置信息。您可以配置自定义 URL 解析规则以支持其他服务。
+
+内置支持的服务包括：
+
+- Google 地图
+- OpenStreetMap
+- Apple 地图
+- 通用 lat,lng 格式
+
+要添加自定义 URL 解析规则，请转到插件设置并查找"URL 解析规则"部分。
+
+### GPS 位置支持
+
+**警告！** 这是一个实验性功能，效果可能因人而异。
+使用前请确保阅读 [文档](https://github.com/esm7/obsidian-map-view#gps-location-support)。
+
+地图视图支持实时 GPS 位置，但由于 Obsidian Mobile 的限制，这需要配套应用程序。
+
+在桌面版中，您可以使用浏览器的地理定位 API（如果可用）。在移动设备上，您需要使用 Geo Helper 应用程序。
+
+要启用 GPS 支持：
+
+1. 在插件设置中启用"启用实验性 GPS 支持"
+2. 配置地理助手类型（命令行或 URL）
+3. 根据您的设置配置相应的命令或 URL
+
+### 离线地图
+
+地图视图支持下载地图瓦片以供离线使用。这在没有互联网连接的地区旅行时特别有用。
+
+要使用离线地图：
+
+1. 转到插件设置中的"离线地图"部分
+2. 点击"管理离线存储"
+3. 选择要下载的区域和缩放级别
+4. 开始下载过程
+
+您还可以配置：
+
+- **自动缓存**：自动缓存您查看的瓦片
+- **自动清除**：自动删除旧瓦片以节省空间
+- **最大存储**：设置离线瓦片的最大存储限制
+
+### 高级设置
+
+#### 调试日志
+
+如果您遇到问题，可以在插件设置中启用调试日志。这将在 Obsidian 的控制台中输出详细信息，可以帮助诊断问题。
+
+#### 自定义设置
+
+地图视图提供许多高级自定义选项：
+
+- **新笔记模板**：自定义从地图创建新笔记时使用的模板
+- **标记聚类**：配置如何聚类附近的标记
+- **查询格式**：自定义"跟随活跃笔记"功能的查询格式
+- **前置内容修复**：配置粘贴地理位置时如何处理前置内容
+
+## 故障排除
+
+### 常见问题
+
+1. **标记没有出现在地图上**
+    - 检查您的查询过滤器是否排除了标记
+    - 验证地理位置格式是否正确
+    - 确保笔记包含 `locations:` 前置内容标签（对于内联位置）
+
+2. **搜索不工作**
+    - 检查您的地理编码提供商设置
+    - 如果使用 OpenStreetMap，确保您已设置电子邮件地址
+    - 如果使用 Google，验证您的 API 密钥
+
+3. **中国地图位置偏移**
+    - 确保您选择了"高德地图"作为地图源
+    - 插件会自动应用坐标转换
+    - 如果仍有问题，请检查您使用的是否是 WGS84 坐标
+
+4. **嵌入地图不更新**
+    - 尝试刷新笔记视图
+    - 检查嵌入的查询是否正确
+    - 确保匹配的笔记实际包含地理位置
+
+### 性能优化
+
+如果地图视图运行缓慢：
+
+1. **减少标记数量**：使用查询过滤器限制显示的标记
+2. **禁用预加载**：在设置中关闭"预加载标记和路径"
+3. **优化显示规则**：减少复杂的显示规则数量
+4. **清理离线瓦片**：定期清理不需要的离线瓦片
+
+## 键盘快捷键
+
+地图视图提供以下可自定义的键盘快捷键：
+
+- **打开地图视图**：打开主地图视图
+- **添加内联地理位置链接**：在当前光标位置添加内联地理位置
+- **添加地理位置（前置内容）**：向当前笔记添加前置内容地理位置
+- **新地理位置笔记**：创建带有地理位置的新笔记
+- **嵌入地图视图**：在当前笔记中嵌入地图
+
+您可以在 Obsidian 设置的"热键"部分中自定义这些快捷键。
+
+## 更新日志
+
+### v6.0（当前版本）
+
+#### 中国地图优化
+
+- ✅ **新增高德地图支持**：内置高德地图作为默认地图源选项
+- ✅ **智能坐标转换**：自动检测高德地图并应用 WGS84 到 GCJ02 坐标转换
+- ✅ **完全中文化**：界面、菜单、设置、通知全部中文化
+- ✅ **保持兼容性**：代码块语言标识符保持为 `mapview`，确保向后兼容
+
+#### 原版功能更新
+
+- 添加了对 Obsidian 属性编辑器的更好支持
+- 改进的 GeoJSON 处理
+- 更好的移动设备支持
+- 性能优化
+
+### 之前版本
+
+- v5.x：添加了 Svelte 重写和许多 UI 改进
+- v4.x：添加了显示规则系统
+- v3.x：添加了嵌入地图功能
+- v2.x：添加了路径支持
+- v1.x：初始发布
+
+## 致谢
+
+本插件基于 [esm7/obsidian-map-view](https://github.com/esm7/obsidian-map-view) 开发，感谢原作者的出色工作。
+
+针对中国用户的优化包括：
+
+- 高德地图集成
+- WGS84 到 GCJ02 坐标转换算法
+- 完整的中文界面本地化
+- 专门针对中国地图服务的优化
+
+特别感谢：
+
+- [Leaflet](https://leafletjs.com/) - 地图引擎
+- [Font Awesome](https://fontawesome.com/) - 图标库
+- [Svelte](https://svelte.dev/) - UI 框架
+- 高德地图 - 提供中国地区优质地图服务
+
+## 许可证
+
+MIT 许可证
+
+## 反馈和支持
+
+如果您遇到问题或有功能请求，请在 GitHub 上提交 issue。
+
+对于中国用户特有的问题（如坐标转换、高德地图相关），请在 issue 中详细说明您的使用场景。
+
 ---
-place_id: "{{googleMapsPlaceData.id}}"
----
-#{{googleMapsPlaceData.types.0}}
-```
 
-Currently only Google Maps Places API supports this advanced templating feature.
-
-### Migrating to Google Places API (New)
-
-Google introduced a new Places API in 2025 and Map View is required to migrate for it in order for the service to continue working for all users.
-
-To migrate your existing API key to Google Places API (New):
-
-1. Visit the Google Cloud Admin [here](https://console.cloud.google.com/google/maps-apis).
-2. You may need to select on top the project you created for creating the Places API, if you have more than one project.
-3. Go to APIs & Services on the left. Search for "Places API (New)" and click Enable.
-4. Go back, then click Keys & Credentials. Find your existing Places API key, and in its Actions menu, choose "Edit API key".
-5. If under "API restrictions" you selected "Don't restrict key" -- you should be good to go. If you have "Restrict key", add "Places API (New)" that should be available after enabling it in step 3. Save the edited key.
-
-Additionally, if you are using Google Places Templates (see above), field names were changed from the old API, and you need to explicitly add them in the plugin settings.
-
-## Map Sources
-
-By default, Map View uses the [CartoDB Voyager Map](https://github.com/CartoDB/basemap-styles), which is free for up to 75K requests per month.
-However, you can change or add map sources in the configuration with any service that has a tiles API using a standard URL syntax.
-
-There are many services of localized, specialized or just beautifully-rendered maps that you can use, sometimes following a free registration.
-See a pretty comprehensive list [here](https://wiki.openstreetmap.org/wiki/Raster_tile_providers).
-
-For providers that use an API key (e.g. MapTiler or Mapbox), consult the provider documentation for how to add the key to the API URL.
-For example, in MapTiler it would be `https://api.maptiler.com/maps/outdoor/{z}/{x}/{y}.png?key=ABCDEFGH`.
-
-Some providers have an extra setting for HiDPI ("retina") tiles, which look sharper on high-resolution displays; to use them automatically when a suitable display is detected, add `{r}` as an optional resolution identifier in the URL.
-
-Although that's the case with this plugin in general, it's worth noting explicitly that using 3rd party map data properly, and making sure you are not violating any terms of use, is your own responsibility.
-
-Note that Google Maps is not in that list, because although it does provide the same standard form of static tiles in the same URL format, the Google Maps terms of service makes it difficult to legally bundle the maps in an application.
-
-If you have multiple map sources, they can be switched from the View pane.
-Additionally, you can set an optional different dark theme URL for each map source.
-If a dark theme is detected, or if you specifically change the map source type to Dark (using the drop down in the View pane), you will get the Dark URL if one is configured.
-
-## Presets
-
-If there is a map state you would like to save and easily come back to, you can save it as a preset.
-To do so, open the Presets pane in the main plugin's controls, and click 'Save as' to save the current view with a name you can easily go back to.
-
-If you enter an already-existing name, that preset will be overwritten.
-
-The saved preset includes the map state (zoom & pan), the filters used, and if you check the box in the "save as" dialog -- also the chosen map source.
-If you do not include the map source as part of the preset, switching to the newly-saved preset will use the currently-selected map source.
-
-Presets _do not_ store the map's theme (light/dark).
-
-The Default preset is special; you can save it using the 'Save as Default' button, and come back to it by clicking the Reset button, by choosing the Default preset from the box, or by opening a fresh Map View that has no previously saved state.
-
-## Open In
-
-Many context menus of Map View display a customizable Open In list, which can open a given location in external sources.
-These sources can be Google Maps, OpenStreetMap, specialized mapping tools or pretty much anything you use for viewing locations.
-
-![](img/open-in.png)
-
-The Open In list is shown:
-
-- When right-clicking on the map.
-- When right-clicking a marker on the map.
-- When right-clicking a geolocation link in a note (if not turned off in the settings).
-- When right-clicking a line in a note that has a location.
-- In the context menu of a note that has a front matter location.
-
-This list can be edited through the plugin's settings menu, with a name that will be displayed in the context menus and a URL pattern. The URL pattern has two parameters -- `{x}` and `{y}` -- that will be replaced by the latitude and longitude of the clicked location. There's also an optional `{name}` parameter that can be replaced with the name of the location (the note name or inline link name).
-
-![](img/custom-open-in.png)
-
-Popular choices may be:
-
-- Google Maps: `https://maps.google.com/?q={x},{y}`
-- OpenStreetMap: `https://www.openstreetmap.org/#map=16/{x}/{y}` (replace `16` with your preferred zoom level)
-- Waze (online dropped pin): `https://ul.waze.com/ul?ll={x}%2C{y}&navigate=yes&zoom=17` (replace `17` with your preferred zoom level)
-
-And you can figure out many other mapping services just by inspecting the URL.
-
-## Routing
-
-You can use Map View to calculate routes between points on the map, either directly (using the GraphHopper API) or by launching an external tool like Google maps.
-
-1. **Choose a starting point** by right-clicking a marker or a map location and choose "mark as routing source". Alternatively, click the flag icon on the right side of the map and select a marker from the list.
-2. **Choose a destination** by right-clicking a marker or a map location and choose "route to point". Alternatively, after selecting a routing source, you can also select a destination using the "select a routing destination" button on the right side of the map (below the flag from step 1).
-3. In the menu that opens, choose between routing using an external service (by default Google Maps) or through the GraphHopper API.
-4. If one of the GraphHopper options are selected, the route is displayed on the map with a time and distance estimation.
-
-![](img/routing.gif)
-
-### External Tool Configuration
-
-By default Map View is configured to use Google Maps as the external routing service.
-You can change this in the settings under Routing -> External routing service URL.
-
-### GraphHopper Configuration
-
-[GraphHopper](https://www.graphhopper.com/) is an open-source-based service that provides a routing API with a generous free tier (as of mid-2025, the [free tier](https://www.graphhopper.com/pricing/) provides 500 route requests per day).
-
-You can sign up [here](https://graphhopper.com/dashboard/signup), obtain an API key, and fill it in the "GraphHopper API key" field under the Map View -> Routing settings.
-
-The free plan offers 3 **routing profiles**: `foot`, `bike` and `car`.
-The paid plans have more profiles (see [here](https://docs.graphhopper.com/openapi/map-data-and-routing-profiles/openstreetmap/geographical-coverage)) and allow further flexibility.
-
-For advanced users who want fine-grained control over GraphHopper routing, you may specify "extra parameters" that will be added to GraphHopper requests. For example, the `snap_preventions` parameter may be added to fine-tune which points the routing engine uses as the start and end points.
-See [here](https://docs.graphhopper.com/openapi/routing/postroute) for a full documentation of the API.
-
-## URL Parsing Rules
-
-As described above, Map View uses _URL parsing rules_ in several places to provide the ability to parse URLs (or other strings) from external sources and convert them to standard geolocations.
-
-1. When right-clicking a line with a recognized link, a "Convert to Geolocation" entry will be shown in the editor context menu.
-2. When a recognized link is detected in the system clipboard, a "Paste as Geolocation" entry will be added in the editor context menu.
-3. In the "New geolocation note" dialog and map search, pasting a supported URL will parse the geolocation.
-
-URL parsing rules can be configured in the plugin's configuration pane and requires familiarity with regular expressions.
-
-The syntax expects two captures group and you can configure if they are parsed as `lat, lng` (most common) or `lng, lat`.
-
-And if you think your added regular expressions are solid enough, please add them to the plugin using a PR so others can benefit!
-
-![](img/url-parsing.png)
-
-## View URLs
-
-You can save the current map state as a URL, which will open from other apps or from within Obsidian.
-
-Click "Copy Map View URL" from the view's "more options" context menu, or "Copy URL" from the map Presets control.
-You can paste the resulting `obsidian://` URL in any local app on your computer or phone, and it will launch Obsidian with Map View in the same view you saved.
-
-Alternatively, you can paste this link inside a note and make it clickable by making it a Markdown link: `[Link name](url...)`.
-This is really useful for going to a specific view (with its query, map source, zoom, pan etc) that is related to a note, e.g. a trip plan.
-
-## Follow Active Note
-
-Map View has a mode on which the map refocuses according to the currently active file, so if you have Map View open in its own pane, it can follow whatever file you are currently focused on.
-
-This is closely related to the setting of "map follows search results", and probably works most intuitively when it is on.
-
-The specific behavior of how to "follow" the active note can be configured via the 'query format for "follow active note"' setting in the configuration.
-By default, Map View uses the [query](#queries) `path:"$PATH$"`, which means that when you switch to a note, the view automatically updates the query to show only the markers within the path of this note. You can edit this setting to achieve more fine-grained behaviors, for example:
-
-- Use `linkedfrom:"$PATH$"` for a more elaborate inclusion of markers from both the file you're on and files it links to.
-- Use `linkedfrom:"$PATH$" OR linkedto:"$PATH$"` to include markers that the active note links to and also markers that _link to this file_.
-
-## Offline Tiles
-
-Map View can store map tiles locally, to be used for caching and offline usage.
-Whenever a map tile is needed to display a Map View or an embedded map, it is first searched in the local storage, leading to considerably better performance and less data usage the more you use Map View.
-
-By default every downloaded map tile is saved to the cache, and downloaded tiles are stored for 6 months or up to 2GB (when the max storage size is reached, tiles are purged by age). These values are configurable under the "Offline Maps" section of the plugin's settings.
-
-Additionally, you can batch-download map tiles that you expect to use often or offline:
-
-- Open the Downloaded Tiles dialog by clicking "offline maps..." from the Map View context menu or "offline storage..." from the plugin settings.
-- Click "download tiles..." to open the new download job dialog.
-- This dialog creates a new download job based on the currently-active Map View, i.e. it will save the area of the map currently displayed.
-- You can decide on a range of zoom levels for which to download tiles in the currently-displayed area of the map, with the current zoom you are viewing displayed under "current zoom level".
-- If you choose "skip existing tiles", the download job will include only tiles that don't yet exist in the offline cache, but if you have tiles from a long time ago and the area has changed, your map may be an inconsistent mix of new and old tiles.
-- **WARNING:** it is up to you to make sure you do not flood the tiles provider, as well as to make sure that caching tiles locally does not violate any terms of use (most providers encourage that, as it saves bandwidth, but it's up to you to make sure with your own specific tile providers).
-- To prevent an accidental flood of tile providers, a maximum of 1 million tiles per download job is hard-coded.
-
-![](img/offline-download.png)
-
-Once starting a download job it progresses in the background, and you can cancel it or track its progress via the Downloaded Tiles dialog. **There is no need to keep the dialog open**, but if it's a mobile device (i.e. iOS or Android), the OS might pause the download when the device screen turns off, or close Obsidian completely.
-
-**General tips:**
-
-- Keep in mind that any click on the map's '+' button increases the zoom level by one. You can use that to assess the level of detail you want to keep offline; The number of tiles to download and the size to store increase exponentially between zoom levels, so if you want to save a large area for offline usage, you probably don't want to go beyond 5-6 zoom levels.
-- You can selectively store different areas in different levels of detail, e.g. 4 zoom levels for your whole country and then 4 more levels for your city or area. Just start a few consecutive downloads while potentially marking "skip existing tiles".
-- If you want to keep a large offline storage, make sure to adjust the "max offline tiles storage" plugin setting.
-
-In order to get a sense of what tiles are available offline, you can check "highlight offline tiles" from the Map View context menu. It will mark with a blue box the tiles that are available locally. The mark is updated only when the map is redrawn, so to visualize the automatic cache (if turned on), go to an area and zoom level that was not downloaded, zoom in, then zoom back out.
-
-Technically, tiles are stored locally in IndexedDB blobs.
-There is currently no support to sync them between devices.
-
-## GPS Location Support
-
-**This still in early beta.**
-
-Map View works inside Obsidian, and as such, is limited by some restrictions that Obsidian enforces.
-One of these restrictions is that the Obsidian apps (both desktop and mobile) do not ship with location permission enabled, and as such, plugins that run within Obsidian cannot access the device location.
-This has been discussed in the past with the Obsidian developers, but as a notes app, they prefer to keep this unavailable for the time being.
-
-As a workaround, Map View supports an external **geo helper** app, which has separate permissions, and can report the current location to Map View from outside the app.
-**This is currently in an early beta, and the experience may not be optimal.**
-However, it answers the basic need of adding proper GPS support to Map View in many cases.
-
-There are currently two variants of the Geo Helper app: a web app and an Android app.
-[Visit the Geo Helper repo for instructions how to install and use it](https://github.com/esm7/obsidian-geo-helper) (the web app requires no installation, but you should still read the instructions).
-
-**Either way, the Geo Helper runs completely locally and your location is not sent to any server. Feel free to inspect the code (and improvements are welcome).**
-
-To use the Geo Helper, first turn on "GPS" in the Map View settings.
-Then, select the Geo Helper type: external URL (default), installed app or command line.
-The use for "command line" is for more advanced usages where you want the web app saved locally, or if you want it launched with a browser that is not your default.
-
-This adds the following functionality:
-
-- A GPS location icon is added to Map View maps (below the search controls). When clicked, it tries to get your location via the Geo Helper, and displays it on the map if successful.
-- Multiple commands that can be mapped and launched from within notes:
-    - GPS: copy inline location
-    - GPS: new geolocation note
-    - GPS: find location and focus
-    - GPS: add geolocation (inline) at current position
-    - GPS: add geolocation (front matter) to current note.
-
-Many of these can also be launched directly from the geo helper after it finds your location.
-
-**Help needed:** the geo helper mobile app is currently only available for Android. If you are an iOS developer who wishes to build and maintain the corresponding app, please reach out.
-
-## Links View
-
-Map View can optionally draw edges between markers of linked notes.
-
-To turn this on, open the "Links" drop-down on the map controls and choose "show links".
-
-The way it works is that all the markers of a given file (sources) are shown as linked to the markers pointed by the links in that file (destinations).
-A destination can be:
-
-- A whole file -- then all the markers in the source file are linked to all the markers in the destination file.
-- A heading/block -- then all the markers in the source file are linked to:
-    - The front-matter marker of the destination file, if any.
-    - Only inline locations in the referenced heading/block.
-
-Finally, you can configure the color used for the edges on the map using any valid [HTML color name](https://www.w3schools.com/tags/ref_colornames.asp) or a hex value like `#faebd7`.
-
-**Warning!** heavily-linked maps are resource-intensive, so it's advisable to turn on links display only when your markers are reasonably filtered. Due to the way they work, links may need to be recalculated every time notes with geolocations are changed. Open Map Views (even background ones) with thousands of visible links may cause hiccups when typing inside geolocation notes that are included in these views' filters.
-
-![](img/links.png)
-
-## Import from KML
-
-Map View has a built-in tool to convert geolocations from a KML file, typically generated by a tool like Google My Maps.
-(To generate a KML from Google My Maps, in the map's context menu click "download KML", and select "export as KML instead of KMZ".)
-
-To use it, open a new or an existing note, and from the note context menu click "import geolocations from file..."
-
-Select a KML file to import, optionally edit the template used to create geolocations, then click "import into note".
-
-## Relation to Obsidian Leaflet
-
-Users who are looking to add mapping capabilities to Obsidian may want to also look at the great [Obsidian Leaflet plugin](https://github.com/valentine195/obsidian-leaflet-plugin).
-And while both plugins are about maps and use Leaflet.js as their visual engine, they represent different approaches.
-
-**What’s similar?**
-
-- Both plugins support creating maps from your notes, or a folder of notes, with extensive options for customization.
-- Both support creating a map for a specific use (e.g. a trip plan), from a focused set of notes, embedding the map in a note etc.
-
-**What's different?**
-
-- Map View started as a view (similarly to Obsidian’s Graph View) rather than an embedded syntax. And while it now supports embedding maps in notes, the main interaction with it is with a GUI and not with a code block. Leaflet, in contrast, offers its customizations mostly via code in its code block.
-- Map View parses geolocations from the front-matter of notes and also from an inline syntax within notes (allowing multiple geolocations in a note, also with different individual tags), while Leaflet focuses on a geolocation-per-note approach (and further locations can be added to the map code itself).
-- Map View is meant to be a research tool based on your notes: it offers interactive queries through a UI, for example, in order to get insights from it or consult it when planning a trip or arriving to a location. In contrast, Leaflet seems to be more directed towards presenting the most fine-grained customizable map.
-- Map View has powerful geolocation search tools that allow you to quickly add locations from within a note or from the map.
-- Map View builds marker icons based on customizable rules, so you do stuff like “color all #food/\* items in red”, on top of that “give #food/pizza a pizza icon”, and all pizza-tagged places will have a red pizza icon. In Leaflet marker icons are given individually for each marker, or with a global setting that assigns a full icon to a tag.
-- Leaflet supports GPX files, overlays and GeoJSON shapes to be added to the map.
-- Given the stand-alone nature of its maps, Leaflet is probably more suitable for TTRPG maps. (These are also possible with Map View, but I believe it comes less naturally.)
-
-## Changelog
-
-### 6.0.0
-
-This is a very big release with a long list of new features, fixes and **breaking changes**.
-
-After reading below, while this version is in beta, you can download it from [here](https://github.com/esm7/obsidian-map-view/releases). Download the 3 files and place them in `VAULT_DIR/.obsidian/plugins/obsidian-map-view`. Do not skip backing-up your `data.json` file!
-
-When reporting bugs, please denote the version **6.0.0.b1**.
-
-**Important Breaking Changes - DO NOT SKIP:**
-
-- If you are using Google Places API for geosearches, this version upgrades to the new API introduced in 2025. This API is not backwards-compatible with the previous one, and to use it, you may need to update your credentials in Google. See migration guide [here](#migrating-to-google-places-api-new).
-    - If you are using [Google Places templates](#google-places-templates), the names of fields were changed in the new Places API, and you need to explicitly add them in the plugin settings.
-- If you are using the OpenStreetMap geocoding provider (which is the default), you now need to provide an email address in the plugin configuration -- due to enforcement of usage restrictions from the OSM side.
-
-**IMPORTANT NOTE: the v6.0 configuration file is not backwards-compatible.** While this version is in beta stage, it's recommended to backup your config file by copying `VAULT_DIR/.obsidian/plugins/obsidian-map-view/data.json`.
-
-**Big New Stuff:**
-
-- Support for [paths](#paths), either in stand-alone files (GPX etc) or inline within notes.
-- A complete redo of what used to be called "marker rules" into a more powerful "display rules" idea, see [here](#marker--path-display-rules).
-- Routing -- built-in tools for calculating driving, cycling and walking paths using the GraphHopper API, see [here](#routing).
-- Badges -- cute little icons that can be added to markers with display rules. See [here](#marker-badge).
-- Edit Mode -- a complete new interface for adding and modifying markers and paths directly from the map.
-
-**Smaller New Stuff:**
-
-- Major performance improvements, Map View should now open instantly after an initial load, and filtering works much faster.
-- Added `opacity` as a marker icon property.
-- A (default) new setting for only one controls section to be expanded at a time.
-- Comeback of "Show native Obsidian popup on marker hover" due to user request (https://github.com/esm7/obsidian-map-view/issues/235).
-- Modifying notes now properly update according to the active filter.
-- Query tag suggestions now only show tags present on the map
-- Added a "focus current note in Map View" command.
-
-**Bug Fixes (some long overdue)**:
-
-- Fixes to respect Obsidian's new "always focus new tab" setting.
-- Fix for https://github.com/esm7/obsidian-map-view/issues/308 (thanks @edzillion!).
-- Inline location bug on iOS (https://github.com/esm7/obsidian-map-view/issues/301).
-- Context menu 'open in' fix for Reading View (https://github.com/esm7/obsidian-map-view/issues/326).
-- Fixed file-menu event not properly registered to the plugin (https://github.com/esm7/obsidian-map-view/issues/327).
-- Fix to the `autoFit` state flag of embedded maps to work more consistently.
-- Map View now sets the type of the 'location' property to List, to prevent issues of Obsidian corrupting it.
-
-### 5.5.0
-
-**The Big Stuff:**
-
-- A mechanism and various tools for **offline usage**. This includes:
-    - The ability to batch-download map tiles for offline usage.
-    - Manage downloaded tiles, e.g. selectively purge old tiles, add or delete downloaded data etc.
-    - Auto-cache tiles locally as part of the plugin's normal usage, with a configurable auto-purge after a certain age and storage size.
-    - The above can make Map View _considerably faster_ to start up, and it gets faster the more you use it.
-    - See [the documentation](#offline-tiles) for more details.
-
-- An [internal tool](#import-from-kml) for importing data from a KML file straight into a note, with configurable formats and fields.
-    - This is a lot thanks to [@mofosyne](https://github.com/mofosyne) who prototyped a very good KML conversion tool some time ago, and agreed to use his code as a base.
-
-**Other New Features:**
-
-- A new 'minimize' button for the controls panel (https://github.com/esm7/obsidian-map-view/issues/270), which was super easy to do after the Svelte rewrite, so why not :)
-- Marker popup improvements, especially for touch screens. The note snippet in the popup can now be interacted with and a button was added to open the context menu of the marker.
-- Google Maps place data in templates (thanks @HalFrgrd!)
-- Supporting templates with YAML content (thanks @HalFrgrd!)
-- New setting "search delay while typing" (which was previously hard-coded to 250ms).
-- If turned on in the settings (which is by default), Map View hijacks the context menu of geolinks in notes, to make sure the Map View "open in" options show up rather than Obsidian's defaults.
-- The `open-map-search` command can now either search in an existing Map View or open a new one. This means it can be mapped to a global Obsidian shortcut which will launch Map View with the search dialog.
-- Added a `{name}` parameter to "open in" items (https://github.com/esm7/obsidian-map-view/issues/290).
-
-**Fixes:**
-
-- Inconsistency in front matter format (https://github.com/esm7/obsidian-map-view/issues/288).
-- Inline tags don't work without a trailing space (https://github.com/esm7/obsidian-map-view/issues/286).
-- Inline geolocation suggestion fails for lines that contain wikilinks (https://github.com/esm7/obsidian-map-view/issues/299).
-
-**Under the Hood:**
-
-- The map controls were rewritten in Svelte.
-    - The immediate benefit is much shorter and cleaner code, but the main incentive is to be able to easily add UI-centric features with much less effort.
-    - **This might break themes or snippets with special customization for Map View.** Please let me know of any issues.
-- Maintenance work, package upgrades and code cleanups.
-
-### 5.1.0
-
-> [!NOTE]
-> I originally wanted this release to be a very major one, with several big features some users have been waiting for.
-> However due to lack of time to complete them in a timely manner, and a big bunch of important fixes and tweaks adding up, I'm releasing this packed minor version for now.
-
-- Allow filtering by front matter properties - thanks @zakj! (Fixes https://github.com/esm7/obsidian-map-view/issues/257)
-- When adding a front-matter geolocation to a note, Map View will now overwrite a previous front-matter geolocation if such existed. Fixes https://github.com/esm7/obsidian-map-view/issues/248 and generally improves the behavior with Obsidian properties.
-- I didn't give proper credit to @The-Noah for a change actually included in 5.0.3: support for front-matter links in 'linkedto' and 'linkedfrom'.
-- Improvements to plugin startup time.
-- Fixed a bug of links showing unexpectedly when opening Map View from a saved URL.
-- Added support for country flags emojis (https://github.com/esm7/obsidian-map-view/issues/183).
-- Upgraded the underlying library to Leaflet 1.9.4, thanks to @Falke-Design who helped me figure out how to make this play nicely inside Obsidian.
-- Added a delicate indication (orange dot) that filters are on.
-- Added support by default to the HiDPI tiles of CartoDB (thanks @sbungartz!)
-- Major improvement to the mechanism behind geolink previews in notes, providing much less false triggers on touch screens (https://github.com/esm7/obsidian-map-view/issues/185), and hopefully eliminating all issues when clicking on such links (https://github.com/esm7/obsidian-map-view/issues/200).
-- URL template does multi replace, e.g. support for OsmAnd (https://github.com/esm7/obsidian-map-view/issues/283)
-- Fix to auto light/dark theme selection (https://github.com/esm7/obsidian-map-view/pull/284 and https://github.com/esm7/obsidian-map-view/issues/136), thanks @The-Noah!
-- Allow a whitespace around the comma in a geolocation (https://github.com/esm7/obsidian-map-view/pull/272), thanks @zakj!
-
-Improvements relating to the [Geo Helper](https://github.com/esm7/obsidian-geo-helper):
-
-- Support for the new (0.0.2) optional location label.
-- Geo Helper settings reorganization (**the settings are not backwards-compatible**, you may need to revalidate them for Geo Helper to work).
-- No longer using filters or other state when asking for an external GPS location.
-
-### 5.0.3
-
-Many important bug fixes are waiting for me to have a little spare time, in the meantime had to settle for smaller release.
-
-- Fixed "Paste as geolocation" issue (https://github.com/esm7/obsidian-map-view/issues/253), thanks
-  @frees0l0!
-- Fixed "Using custom property instead default location does not work" (https://github.com/esm7/obsidian-map-view/issues/251).
-
-### 5.0.2
-
-- Fixed moving inline markers followed by tags (https://github.com/esm7/obsidian-map-view/issues/234).
-- Fixed certain emojis not being correctly recognized as such for map markers (https://github.com/esm7/obsidian-map-view/issues/233).
-- Added support for string arrays as front matter locations (https://github.com/esm7/obsidian-map-view/issues/229).
-
-### 5.0.1
-
-- Fixed a bug in "add geolocation (front matter) to current note".
-
-### 5.0.0
-
-**This is a major Map View release with tons of new features and fixes.**
-
-**Forward compatibility warning:** front-matter notes you create with this version will not show in previous Map View versions.
-
-**The Big Changes:**
-
-- Map View can now show **note links** as edges in the map. Open the Links drop-down in the map controls to turn it on and configure how it looks (big thanks to @IanLindsley!)
-    - All the markers of a given file are linked to the markers pointed by the links in that file. Those links may reference the whole destination file, and then all the markers in it are linked, or a heading/block and then only the front-matter marker and specific heading/block locations are linked.
-    - See more details [above](#links-view).
-- Markers can now be moved on the map: right-click a marker, click "enable move" and drag the marker to its new location. The corresponding note will be updated automatically. Big thanks to @IanLindsley for this too!
-- You can now set emojis as map markers. In configuring marker icon rules, just enter an emoji instead of a Font Awesome name and it should show up.
-- Markers can now show optional **labels** showing the marker name. You can turn it on from the View drop-down on the map.
-- The marker popup mechanism was rewritten to enable a much more streamlined experience and less intrusive popups.
-    - I was in a dilemma whether to continue maintaining the old option (the Obsidian native preview), as it still has its upsides (e.g. it allows scrolling and it preserves note formatting better), but decided against it due to the complexity it will introduce in the long run.
-    - If you have a strong opinion towards using the old Obsidian preview window, please open an issue so it can be discussed.
-- Map View now supports heading links and block links in 'linkedfrom:' queries, and also for the new Links feature.
-    - I recommend the "Copy Block Link" plugin that makes this more useful.
-- New format for front matter location, `location: "lat,lng"`, which plays better with Obsidian's property editor. The old format is still supported but new front-matter notes will be created with the new format. Solves https://github.com/esm7/obsidian-map-view/issues/202.
-- A new marker shape `simple-circle` is now supported, drawing a simple circle at the given color without a pin shape.
-
-**Smaller Improvements:**
-
-- The key to use for front matter geolocation is now configurable (https://github.com/esm7/obsidian-map-view/issues/195)
-- Search names containing slashes are now sanitized and handled properly (https://github.com/esm7/obsidian-map-view/issues/207)
-- Inline tags are now part of filter suggestions (https://github.com/esm7/obsidian-map-view/issues/225)
-- The actions from a search marker context menu now use the geolocation of the marker rather than the mouse location.
-- The way Font Awesome is used was changed to mitigate a performance issue that Map View caused (https://github.com/esm7/obsidian-map-view/issues/216).
-- Font Awesome upgraded to 6.5.1.
-- Map View now requires Obsidian 1.5.6 or newer, and uses the formal front matter API.
-- Tab icons of map views now have the proper map pin icon (https://github.com/esm7/obsidian-map-view/issues/227).
-- Fixed a bug of the cursor not jumping forward after an inline location suggestion.
+**注意**：使用高德地图时请遵守相关服务条款。坐标转换功能旨在提供更好的中国地图体验，但请确保您有权在您的用例中使用相应的地图服务。
