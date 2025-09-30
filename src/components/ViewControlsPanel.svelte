@@ -265,9 +265,7 @@
         <div class="top-right-controls">
             {#if viewSettings.showFilters}
                 {#if mapState.query.length > 0}
-                    <span class="mv-filters-on" title="Filters are active"
-                        >🟠</span
-                    >
+                    <span class="mv-filters-on" title="过滤器已激活">🟠</span>
                 {/if}
             {/if}
             {#if viewSettings.showMinimizeButton}
@@ -275,8 +273,8 @@
                 <div
                     class="minimize-button"
                     title={settings.mapControlsMinimized
-                        ? 'Expand controls'
-                        : 'Minimize controls'}
+                        ? '展开控制'
+                        : '最小化控制'}
                     onclick={() => {
                         minimized = !minimized;
                         settings.mapControlsMinimized = minimized;
@@ -295,19 +293,19 @@
             {#if viewSettings.showOpenButton}
                 <button
                     class="button"
-                    title="Open a full Map View with the current state."
+                    title="使用当前状态打开完整的地图视图。"
                     onclick={openButtonClick}
                 >
-                    Open
+                    打开
                 </button>
             {/if}
             {#if viewSettings.showEmbeddedControls && !areStatesEqual(mapState, lastSavedState, view.display?.map)}
                 <button
                     class="button"
-                    title="Update the source code block with the updated view state."
+                    title="用更新的视图状态更新源代码块。"
                     onclick={() => saveButton()}
                 >
-                    Save
+                    保存
                 </button>
             {/if}
             {#if viewSettings.showFilters}
