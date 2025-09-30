@@ -127,3 +127,81 @@ export function transformCoordinatesForAutoNavi(
     );
     return new leaflet.LatLng(transformedLat, transformedLng);
 }
+
+/**
+ * Transform from GCJ-02 to WGS84 (for saving coordinates from AutoNavi maps)
+ * Using more precise reverse transformation algorithm
+ */
+function gcj02ToWgs84(gcjLat: number, gcjLon: number): [number, number] {
+    if (outOfChina(gcjLat, gcjLon)) {
+        return [gcjLat, gcjLon];
+    }
+
+    let dLat = transformLat(gcjLon - 105.0, gcjLat - 35.0);
+    let dLon = transformLon(gcjLon - 105.0, gcjLat - 35.0);
+    let radLat = (gcjLat / 180.0) * Math.PI;
+    let magic = Math.sin(radLat);
+    magic = 1 - ee * magic * magic;
+    let sqrtMagic = Math.sqrt(magic);
+    dLat = (dLat * 180.0) / (((a * (1 - ee)) / (magic * sqrtMagic)) * Math.PI);
+    dLon = (dLon * 180.0) / ((a / sqrtMagic) * Math.cos(radLat) * Math.PI);
+
+    // More precise reverse transformation: WGS84 = GCJ02 - delta
+    const wgsLat = gcjLat - dLat;
+    const wgsLon = gcjLon - dLon;
+
+    return [wgsLon, wgsLat];
+}
+
+/**
+ * Transform coordinates from AutoNavi maps (GCJ-02 to WGS84) for saving
+ */
+export function transformCoordinatesFromAutoNavi(
+    location: leaflet.LatLng,
+): leaflet.LatLng {
+    const [transformedLng, transformedLat] = gcj02ToWgs84(
+        location.lat,
+        location.lng,
+    );
+    return new leaflet.LatLng(transformedLat, transformedLng);
+}
+
+/**
+ * Test function to verify coordinate transformation accuracy
+ * Beijing coordinates: WGS84 (116.397428, 39.90923) -> GCJ02 (116.404, 39.915)
+ */
+export function testCoordinateTransformation(): void {
+    // Test Beijing coordinates
+    const wgs84Beijing = new leaflet.LatLng(39.90923, 116.397428);
+    const gcj02Beijing = transformCoordinatesForAutoNavi(wgs84Beijing);
+    const backToWgs84 = transformCoordinatesFromAutoNavi(gcj02Beijing);
+
+    console.log('Coordinate transformation test:');
+    console.log('Original WGS84:', wgs84Beijing.lat, wgs84Beijing.lng);
+    console.log('Converted to GCJ02:', gcj02Beijing.lat, gcj02Beijing.lng);
+    console.log('Back to WGS84:', backToWgs84.lat, backToWgs84.lng);
+    console.log(
+        'Difference:',
+        Math.abs(backToWgs84.lat - wgs84Beijing.lat),
+        Math.abs(backToWgs84.lng - wgs84Beijing.lng),
+    );
+
+    // Test Shanghai coordinates
+    const wgs84Shanghai = new leaflet.LatLng(31.230416, 121.473701);
+    const gcj02Shanghai = transformCoordinatesForAutoNavi(wgs84Shanghai);
+    const backToWgs84Shanghai = transformCoordinatesFromAutoNavi(gcj02Shanghai);
+
+    console.log('\nShanghai test:');
+    console.log('Original WGS84:', wgs84Shanghai.lat, wgs84Shanghai.lng);
+    console.log('Converted to GCJ02:', gcj02Shanghai.lat, gcj02Shanghai.lng);
+    console.log(
+        'Back to WGS84:',
+        backToWgs84Shanghai.lat,
+        backToWgs84Shanghai.lng,
+    );
+    console.log(
+        'Difference:',
+        Math.abs(backToWgs84Shanghai.lat - wgs84Shanghai.lat),
+        Math.abs(backToWgs84Shanghai.lng - wgs84Shanghai.lng),
+    );
+}
