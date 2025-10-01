@@ -2,7 +2,7 @@ name: Build and Release
 
 on:
     push:
-        branches: [master, main]
+        branches: [v6.0]
         tags: ['v*']
 
 jobs:
