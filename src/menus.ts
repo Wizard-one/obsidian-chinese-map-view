@@ -27,6 +27,7 @@ import { createGeoJsonInFile } from 'src/geojsonLayer';
 import {
     isAutoNaviMapSource,
     transformCoordinatesFromAutoNavi,
+    transformCoordinatesForAutoNavi,
 } from 'src/coordinateTransformer';
 import { SvelteModal } from 'src/svelte';
 import TextBoxDialog from './components/TextBoxDialog.svelte';
@@ -100,9 +101,24 @@ export function populateOpenInItems(
 ) {
     for (let setting of settings.openIn) {
         if (!setting.name || !setting.urlPattern) continue;
+
+        // Check if this is a Gaode/Amap target that needs coordinate transformation
+        const isGaodeAmap =
+            setting.name.toLowerCase().includes('高德') ||
+            setting.name.toLowerCase().includes('amap') ||
+            setting.name.toLowerCase().includes('gaode') ||
+            setting.urlPattern.toLowerCase().includes('autonavi.com') ||
+            setting.urlPattern.toLowerCase().includes('amap.com');
+
+        // Apply coordinate transformation if needed
+        let transformedLocation = location;
+        if (isGaodeAmap) {
+            transformedLocation = transformCoordinatesForAutoNavi(location);
+        }
+
         const fullUrl = setting.urlPattern
-            .replace(/{x}/g, location.lat.toString())
-            .replace(/{y}/g, location.lng.toString())
+            .replace(/{x}/g, transformedLocation.lat.toString())
+            .replace(/{y}/g, transformedLocation.lng.toString())
             .replace(/{name}/g, name || '');
         menu.addItem((item: MenuItem) => {
             item.setTitle(`Open in ${setting.name}`);

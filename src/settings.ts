@@ -250,6 +250,11 @@ export const DEFAULT_SETTINGS: PluginSettings = {
             name: 'Google Maps',
             urlPattern: 'https://maps.google.com/?q={x},{y}',
         },
+        {
+            name: '高德地图',
+            urlPattern:
+                'https://uri.amap.com/marker?position={y},{x}&name={name}',
+        },
     ],
     urlParsingRules: [
         {
