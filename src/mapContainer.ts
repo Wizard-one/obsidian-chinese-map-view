@@ -1172,9 +1172,15 @@ export class MapContainer {
                 layer: leaflet.Layer;
             }) => {
                 if (e.layer instanceof leaflet.Marker) {
+                    let newLocation = e.layer.getLatLng();
+                    // 如果使用高德地图，需要将GCJ-02坐标转换回WGS84保存
+                    if (isAutoNaviMapSource(this.getMapSource())) {
+                        newLocation =
+                            transformCoordinatesFromAutoNavi(newLocation);
+                    }
                     moveFileMarker(
                         marker,
-                        e.layer.getLatLng(),
+                        newLocation,
                         this.settings,
                         this.app,
                     );
