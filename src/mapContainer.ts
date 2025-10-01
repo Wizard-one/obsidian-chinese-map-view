@@ -2165,6 +2165,17 @@ export class MapContainer {
 
         const transformedGeojson = JSON.parse(JSON.stringify(geojson)); // 深拷贝
 
+        // 导入outOfChina函数
+        const outOfChina = (lat: number, lon: number): boolean => {
+            if (lon < 72.004 || lon > 137.8347) {
+                return true;
+            }
+            if (lat < 0.8293 || lat > 55.8271) {
+                return true;
+            }
+            return false;
+        };
+
         const transformCoordinates = (coords: any): any => {
             if (
                 typeof coords[0] === 'number' &&
@@ -2172,6 +2183,11 @@ export class MapContainer {
             ) {
                 // 这是一个坐标点 [lng, lat]
                 const latlng = new leaflet.LatLng(coords[1], coords[0]);
+                // 检查坐标是否在中国境内，只有中国境内的坐标才需要转换
+                if (outOfChina(latlng.lat, latlng.lng)) {
+                    // 国外坐标，直接返回原坐标
+                    return [coords[0], coords[1]];
+                }
                 const transformed = transformCoordinatesForAutoNavi(latlng);
                 return [transformed.lng, transformed.lat];
             } else if (Array.isArray(coords[0])) {
@@ -2211,6 +2227,17 @@ export class MapContainer {
 
         const transformedGeojson = JSON.parse(JSON.stringify(geojson)); // 深拷贝
 
+        // 导入outOfChina函数
+        const outOfChina = (lat: number, lon: number): boolean => {
+            if (lon < 72.004 || lon > 137.8347) {
+                return true;
+            }
+            if (lat < 0.8293 || lat > 55.8271) {
+                return true;
+            }
+            return false;
+        };
+
         const transformCoordinates = (coords: any): any => {
             if (
                 typeof coords[0] === 'number' &&
@@ -2218,6 +2245,11 @@ export class MapContainer {
             ) {
                 // 这是一个坐标点 [lng, lat]
                 const latlng = new leaflet.LatLng(coords[1], coords[0]);
+                // 检查坐标是否在中国境内，只有中国境内的坐标才需要反向转换
+                if (outOfChina(latlng.lat, latlng.lng)) {
+                    // 国外坐标，直接返回原坐标
+                    return [coords[0], coords[1]];
+                }
                 const transformed = transformCoordinatesFromAutoNavi(latlng);
                 return [transformed.lng, transformed.lat];
             } else if (Array.isArray(coords[0])) {
