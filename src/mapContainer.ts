@@ -683,8 +683,14 @@ export class MapContainer {
                     e.shape === 'Rectangle' ||
                     e.shape === 'Polygon'
                 ) {
+                    let geojson = (e.layer as leaflet.Polyline).toGeoJSON();
+                    // 如果使用高德地图，需要将GeoJSON中的GCJ-02坐标转换回WGS84保存
+                    if (isAutoNaviMapSource(this.getMapSource())) {
+                        geojson =
+                            this.transformGeoJsonCoordinatesReverse(geojson);
+                    }
                     createGeoJsonInFile(
-                        (e.layer as leaflet.Polyline).toGeoJSON(),
+                        geojson,
                         file,
                         heading,
                         tags,
@@ -2100,12 +2106,13 @@ export class MapContainer {
                 layer: leaflet.Layer;
             }) => {
                 if (e.layer instanceof leaflet.Polyline) {
-                    await editGeoJson(
-                        marker,
-                        (e.layer as leaflet.Polyline).toGeoJSON(),
-                        this.settings,
-                        this.app,
-                    );
+                    let geojson = (e.layer as leaflet.Polyline).toGeoJSON();
+                    // 如果使用高德地图，需要将GeoJSON中的GCJ-02坐标转换回WGS84保存
+                    if (isAutoNaviMapSource(this.getMapSource())) {
+                        geojson =
+                            this.transformGeoJsonCoordinatesReverse(geojson);
+                    }
+                    await editGeoJson(marker, geojson, this.settings, this.app);
                 } else {
                     new Notice('无法编辑此路径。');
                     console.error('Cannot edit unknown object:', e);
@@ -2160,6 +2167,52 @@ export class MapContainer {
                 // 这是一个坐标点 [lng, lat]
                 const latlng = new leaflet.LatLng(coords[1], coords[0]);
                 const transformed = transformCoordinatesForAutoNavi(latlng);
+                return [transformed.lng, transformed.lat];
+            } else if (Array.isArray(coords[0])) {
+                // 这是一个坐标数组，递归处理
+                return coords.map(transformCoordinates);
+            }
+            return coords;
+        };
+
+        const processGeometry = (geometry: any) => {
+            if (geometry && geometry.coordinates) {
+                geometry.coordinates = transformCoordinates(
+                    geometry.coordinates,
+                );
+            }
+        };
+
+        if (transformedGeojson.type === 'Feature') {
+            processGeometry(transformedGeojson.geometry);
+        } else if (transformedGeojson.type === 'FeatureCollection') {
+            transformedGeojson.features?.forEach((feature: any) => {
+                processGeometry(feature.geometry);
+            });
+        } else {
+            // 直接是几何对象
+            processGeometry(transformedGeojson);
+        }
+
+        return transformedGeojson;
+    }
+
+    /**
+     * 反向转换GeoJSON中的坐标：将GCJ-02坐标转换回WGS84
+     */
+    private transformGeoJsonCoordinatesReverse(geojson: any): any {
+        if (!geojson) return geojson;
+
+        const transformedGeojson = JSON.parse(JSON.stringify(geojson)); // 深拷贝
+
+        const transformCoordinates = (coords: any): any => {
+            if (
+                typeof coords[0] === 'number' &&
+                typeof coords[1] === 'number'
+            ) {
+                // 这是一个坐标点 [lng, lat]
+                const latlng = new leaflet.LatLng(coords[1], coords[0]);
+                const transformed = transformCoordinatesFromAutoNavi(latlng);
                 return [transformed.lng, transformed.lat];
             } else if (Array.isArray(coords[0])) {
                 // 这是一个坐标数组，递归处理
