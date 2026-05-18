@@ -15,6 +15,27 @@ If the [obsidian-skills](https://github.com/kepano/obsidian-skills) plugin is no
 Geolocations: When the content to be added contains named real-world places (restaurants, venues, hotels, attractions, etc.), format each as a Map View inline geolink -- [Place Name](geo:lat,lng) -- rather than plain text.
 If coordinates are not already known, use this skill to look them up before appending.
 
+### Tagging geolinks (default: tag every place)
+
+Map View inline tags go **after** the geolink, separated by a space, as `tag:name` -- bare word, **no `#`**. This is different from the `tag:#name` syntax used inside `mv-query` queries (the inline marker `tag:food` is matched by the query `tag:#food`). Multiple tags are space-separated.
+
+Examples:
+
+```
+- [Nono](geo:32.14,34.89) tag:food
+- [The Rally Hotel](geo:39.75,-104.99) tag:sleep
+- [Some Trail](geo:32.7,35.1) tag:hike tag:hike/water
+```
+
+**Default to tagging.** Before writing geolinks, figure out the right tag:
+
+1. Check the project's `CLAUDE.md` for a documented geolocations tag vocabulary.
+2. Grep an existing note in the vault that contains similar places to see the actual conventions in use, e.g.:
+    ```bash
+    grep -h "geo:" zk/*trip*.md | head
+    ```
+3. Only omit a tag if no plausible match exists in the user's vocabulary -- **never invent a new tag**. Prefer no tag over a made-up one.
+
 ## Commands
 
 ```bash
@@ -42,6 +63,8 @@ obsidian mv-focus-note file="Paris Trip"
 Opens Map View filtered to show only the locations in that note. Use after adding geolocations to a if the user wants to see the results visually. The `file` parameter is resolved like a wikilink — name only, no path or extension needed.
 
 Consider actively asking the user if he wants to see the results after adding geolocations.
+
+**Important:** when using `mv-focus-note`, it's recommended that the focused note will not contain links to other notes that contain geolinks. This is because the user might have a `linkedFrom` query template set for `mv-focus-note`, so it will show much more than intended. If using `mv-focus-note`, and you were not asked to link to other notes, do not add unnecessary links.
 
 ```bash
 obsidian mv-query query="<query>"
@@ -76,6 +99,8 @@ Take special notice of the **`distancefrom:` query operator** that filters marke
 obsidian mv-query "distancefrom:32.08,34.78<5km"
 obsidian mv-query "distancefrom:32.08,34.78<500m AND tag:#restaurant"
 ```
+
+Note: inside `mv-query`, tags are written with a `#` (e.g. `tag:#food`). The corresponding **inline** tag in a note body is written _without_ the `#` (e.g. `tag:food`). See the "Tagging geolinks" section above.
 
 Radius can be in `km`, `m`, `mi`, or `ft`. This is the fastest way to find vault markers near a given point — no routing API key required. Use it to quickly narrow down candidates before calling `mv-calc-route` only on the ones that are geographically plausible, or to answer the users for queries like "what do I have in my vault that is around...".
 
