@@ -15,5 +15,6 @@
         "allowImportingTsExtensions": true,
         "lib": ["dom", "es2020", "scripthost"]
     },
-    "include": ["**/*.ts"]
+    "exclude": ["dist"],
+    "include": ["src/**/*.ts", "src/**/*.svelte"]
 }
