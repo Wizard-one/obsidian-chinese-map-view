@@ -2244,6 +2244,24 @@ export class MapContainer {
         return transformedGeojson;
     }
 
+
+    private createLoadAnimationDiv() {
+        if (this.display.loadAnimationDiv) return;
+        if (this.plugin.layerCache) return;
+
+        // Imitating the Obsidian load indicator
+        this.display.loadAnimationDiv =
+            this.display.mapDiv.createDiv('mv-load-bar');
+        const bar = this.display.loadAnimationDiv.createDiv(
+            'progress-bar-indicator',
+        );
+        bar.createDiv('progress-bar-line');
+        bar.createDiv('progress-bar-subline').style = 'display: none;';
+        bar.createDiv('progress-bar-subline').addClass('mod-increase');
+        bar.createDiv('progress-bar-subline').addClass('mod-decrease');
+
+
+
     /**
      * 反向转换GeoJSON中的坐标：将GCJ-02坐标转换回WGS84
      */
@@ -2288,5 +2306,6 @@ export class MapContainer {
         }
 
         return transformedGeojson;
+
     }
 }
