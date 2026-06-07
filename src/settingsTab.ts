@@ -85,6 +85,7 @@ export class SettingsTab extends PluginSettingTab {
             });
 
         let apiKeyControl: Setting = null;
+        let amapApiKeyControl: Setting = null;
         let osmUser: Setting = null;
         new Setting(containerEl)
             .setName('Geocoding search provider')
@@ -94,12 +95,13 @@ export class SettingsTab extends PluginSettingTab {
             .addDropdown((component) => {
                 component
                     .addOption('osm', 'OpenStreetMap')
+                    .addOption('amap', '高德地图（需要API密钥）')
                     .addOption('google', 'Google (API key required)')
                     .setValue(
                         this.plugin.settings.searchProvider ||
                             DEFAULT_SETTINGS.searchProvider,
                     )
-                    .onChange(async (value: 'osm' | 'google') => {
+                    .onChange(async (value: 'osm' | 'google' | 'amap') => {
                         this.plugin.settings.searchProvider = value;
                         await this.plugin.saveSettings();
                         this.refreshPluginOnHide = true;
@@ -107,6 +109,8 @@ export class SettingsTab extends PluginSettingTab {
                             value === 'osm' ? '' : 'none';
                         apiKeyControl.settingEl.style.display =
                             value === 'google' ? '' : 'none';
+                        amapApiKeyControl.settingEl.style.display =
+                            value === 'amap' ? '' : 'none';
                         googlePlacesControl.settingEl.style.display =
                             this.plugin.settings.searchProvider === 'google'
                                 ? ''
@@ -157,6 +161,26 @@ export class SettingsTab extends PluginSettingTab {
                     ? ''
                     : 'red';
             });
+        amapApiKeyControl = new Setting(containerEl)
+            .setName('高德地图API密钥')
+            .setDesc(
+                '如果使用高德地图作为地理编码搜索提供商，请在此粘贴API密钥。更改后需重启插件。',
+            )
+            .addText((component) => {
+                component
+                    .setValue(this.plugin.settings.amapApiKey)
+                    .onChange(async (value) => {
+                        this.plugin.settings.amapApiKey = value;
+                        await this.plugin.saveSettings();
+                        component.inputEl.style.borderColor = value
+                            ? ''
+                            : 'red';
+                    });
+                component.inputEl.style.borderColor = this.plugin.settings
+                    .amapApiKey
+                    ? ''
+                    : 'red';
+            });
         let googlePlacesControl = new Setting(containerEl)
             .setName('Use Google Places for searches')
             .setDesc(
@@ -195,6 +219,8 @@ export class SettingsTab extends PluginSettingTab {
             this.plugin.settings.searchProvider === 'osm' ? '' : 'none';
         apiKeyControl.settingEl.style.display =
             this.plugin.settings.searchProvider === 'google' ? '' : 'none';
+        amapApiKeyControl.settingEl.style.display =
+            this.plugin.settings.searchProvider === 'amap' ? '' : 'none';
         googlePlacesControl.settingEl.style.display =
             this.plugin.settings.searchProvider === 'google' ? '' : 'none';
         googlePlacesDataFields.settingEl.style.display =

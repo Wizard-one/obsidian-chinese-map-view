@@ -99,6 +99,22 @@ export class GeoSearcher {
                 );
                 console.log(e);
             }
+        } else if (this.settings.searchProvider == 'amap') {
+            if (this.settings.amapApiKey) {
+                try {
+                    const amapResults = await amapSearch(
+                        query,
+                        this.settings,
+                    );
+                    results = results.concat(amapResults);
+                } catch (e) {
+                    console.log(
+                        'Map View: AMap search failed: ',
+                        e.message,
+                    );
+                    console.log(e);
+                }
+            }
         } else {
             const areaSW = searchArea?.getSouthWest() || null;
             const areaNE = searchArea?.getNorthEast() || null;
@@ -211,6 +227,60 @@ export async function googlePlacesSearch(
         return results;
     } catch (e) {
         console.log('Map View: Google Places API error:', e);
+        return [];
+    }
+}
+
+/**
+ * Search using AMap (Gaode) Web API v5.
+ * @see https://lbs.amap.com/api/webservice/guide/api/search
+ */
+export async function amapSearch(
+    query: string,
+    settings: PluginSettings,
+): Promise<GeoSearchResult[]> {
+    if (settings.searchProvider != 'amap' || !settings.amapApiKey) return [];
+
+    const encodedQuery = encodeURIComponent(query);
+    const url = `https://restapi.amap.com/v5/place/text?keywords=${encodedQuery}&key=${settings.amapApiKey}`;
+
+    try {
+        const response = await request({ url });
+        const data = JSON.parse(response);
+
+        if (data.status !== '1') {
+            console.log('Map View: AMap search error:', data.info);
+            return [];
+        }
+
+        const results: GeoSearchResult[] = [];
+        if (data.pois && data.pois.length > 0) {
+            for (const poi of data.pois) {
+                // AMap returns location as "lng,lat"
+                const [lngStr, latStr] = poi.location.split(',');
+                const lng = parseFloat(lngStr);
+                const lat = parseFloat(latStr);
+
+                if (isNaN(lng) || isNaN(lat)) continue;
+
+                // Convert from GCJ-02 (AMap) to WGS-84 (Leaflet)
+                const [wgsLng, wgsLat] = utils.gcj02ToWgs84(lng, lat);
+                const geolocation = new leaflet.LatLng(wgsLat, wgsLng);
+
+                const name = poi.name || 'Unknown Place';
+                const address = poi.address || '';
+                const displayName = address ? `${name} (${address})` : name;
+
+                results.push({
+                    name: displayName,
+                    location: geolocation,
+                    resultType: 'searchResult',
+                } as GeoSearchResult);
+            }
+        }
+        return results;
+    } catch (e) {
+        console.log('Map View: AMap API error:', e);
         return [];
     }
 }

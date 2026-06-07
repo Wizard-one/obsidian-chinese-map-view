@@ -49,10 +49,11 @@ export type PluginSettings = {
     mapControlsSections: MapControlsSections;
     mapControlsMinimized: boolean;
     maxClusterRadiusPixels: number;
-    searchProvider: 'osm' | 'google';
+    searchProvider: 'osm' | 'google' | 'amap';
     osmUser: string;
     searchDelayMs: number;
     geocodingApiKey: string;
+    amapApiKey: string;
     useGooglePlacesNew2025: boolean;
     googlePlacesDataFields: string;
     saveHistory: boolean;
@@ -290,6 +291,7 @@ export const DEFAULT_SETTINGS: PluginSettings = {
     osmUser: '',
     searchDelayMs: 250,
     geocodingApiKey: '',
+    amapApiKey: '',
     useGooglePlacesNew2025: false,
     googlePlacesDataFields: '',
     mapSources: [
